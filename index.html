@@ -7,9 +7,14 @@
   <meta name="description" content="שיחת ייעוץ אסטרטגית חינמית עם אור קינדה">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <!-- preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- preload LCP image -->
+  <link rel="preload" as="image" href="assets/photos/1.webp" fetchpriority="high">
+  <!-- fonts async — no render block -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap"></noscript>
   <style>
 
     /* ══ RESET ══ */
@@ -511,7 +516,10 @@
     </div>
 
     <div class="hero-img-col fu d2">
-      <img src="assets/photos/1.png" alt="אור קינדה">
+      <picture>
+        <source srcset="assets/photos/1.webp" type="image/webp">
+        <img src="assets/photos/1.png" alt="אור קינדה" width="800" height="1000" fetchpriority="high" decoding="sync">
+      </picture>
     </div>
 
   </div>
@@ -636,7 +644,10 @@
   <div class="wrap">
     <div class="about-split fu">
       <div class="about-frame-card">
-        <img src="assets/photos/תמונות דף נחיתה (4).png" alt="אור קינדה">
+        <picture>
+          <source srcset="assets/photos/about.webp" type="image/webp">
+          <img src="assets/photos/תמונות דף נחיתה (4).png" alt="אור קינדה" width="1080" height="1350" loading="lazy" decoding="async">
+        </picture>
       </div>
       <div>
         <h2 class="sec-h2" style="margin-bottom:24px;">
