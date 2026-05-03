@@ -53,8 +53,28 @@
     .fu.d3 { transition-delay:.36s; }
 
     /* ══ KEYFRAMES ══ */
-    @keyframes scroll-fwd { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-    @keyframes scroll-rev { from{transform:translateX(-50%)} to{transform:translateX(0)} }
+    @keyframes scroll-proof { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* PROOF MARQUEE */
+    .proof-marquee-wrap { overflow:hidden; width:100%; }
+    .proof-marquee-inner {
+      display:flex; width:max-content;
+      direction:ltr;
+      animation:scroll-proof 36s linear infinite;
+      gap:24px;
+    }
+    .proof-marquee-wrap:hover .proof-marquee-inner { animation-play-state:paused; }
+    .proof-snap-img {
+      flex-shrink:0; width:340px;
+      border-radius:18px; overflow:hidden;
+      border:1px solid var(--border-hi);
+      box-shadow:0 16px 48px rgba(9,15,28,.65);
+    }
+    .proof-snap-img img { width:100%; height:auto; display:block; }
+    @media (max-width:700px) {
+      .proof-snap-img { width:240px; }
+    }
+
     @keyframes btn-glow {
       0%,100% { box-shadow: 0 6px 36px rgba(240,242,245,.14); }
       50%      { box-shadow: 0 8px 52px rgba(143,184,216,.32); }
@@ -204,48 +224,66 @@
        SECTION 2 — PROBLEM
     ══════════════════════════════ */
     .tried-intro {
-      font-size: 1.14rem; color:var(--text-dim);
-      line-height:1.85; margin-bottom:18px; max-width:700px;
-    }
-    .tried-list { list-style:none; margin-bottom:20px; }
-    .tried-list li {
-      position:relative;
-      padding-right:24px;
       font-size:1.14rem; color:var(--text-dim);
-      line-height:1.85; margin-bottom:10px; max-width:700px;
+      line-height:1.85; margin-bottom:36px;
+      text-align:center; max-width:700px; margin-left:auto; margin-right:auto;
     }
-    .tried-list li::before {
-      content:'·'; position:absolute; right:0;
-      color:var(--accent); font-size:1.4rem; line-height:1;
-      top:6px;
+    .pain-cards {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:24px; margin-bottom:52px;
+    }
+    .pain-card {
+      background:var(--bg-card);
+      border:1px solid var(--border-hi);
+      border-radius:20px; padding:40px 28px 36px;
+      text-align:center;
+      transition:border-color .22s, box-shadow .22s;
+    }
+    .pain-card:hover {
+      border-color:rgba(143,184,216,.4);
+      box-shadow:0 12px 40px rgba(9,15,28,.5);
+    }
+    .pain-icon {
+      width:58px; height:58px; border-radius:50%;
+      border:1.5px solid var(--accent);
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 24px;
+      color:var(--accent);
+    }
+    .pain-icon svg { width:26px; height:26px; stroke:currentColor; fill:none; stroke-width:1.8; }
+    .pain-title {
+      font-size:1.08rem; font-weight:700;
+      color:var(--text); margin-bottom:14px; line-height:1.45;
+    }
+    .pain-desc {
+      font-size:.97rem; color:var(--text-dim);
+      line-height:1.75; margin:0;
     }
     .tried-end {
-      font-size:1.14rem; font-weight:700;
-      color:var(--text); line-height:1.7; max-width:700px;
+      font-size:1.22rem; font-weight:700;
+      color:var(--text); line-height:1.7;
+      text-align:center; max-width:700px;
+      margin:0 auto;
+    }
+    @media (max-width:700px) {
+      .pain-cards { grid-template-columns:1fr; gap:16px; }
     }
 
     /* ══════════════════════════════
        SECTION 3 — ABOUT
     ══════════════════════════════ */
     .about-split {
-      display:grid; grid-template-columns:310px 200px 1fr;
+      display:grid; grid-template-columns:310px 1fr;
       gap:36px; align-items:start;
-    }
-    .about-main-img {
-      width:310px; display:block;
-      -webkit-mask-image:linear-gradient(to bottom, black 0%, black 55%, rgba(0,0,0,.5) 78%, transparent 100%);
-      mask-image:linear-gradient(to bottom, black 0%, black 55%, rgba(0,0,0,.5) 78%, transparent 100%);
     }
     .about-frame-card {
       border-radius:18px;
       border:1.5px solid rgba(143,184,216,.34);
-      box-shadow:0 20px 56px rgba(9,15,28,.65), 0 0 0 5px rgba(143,184,216,.07);
+      box-shadow:0 24px 64px rgba(9,15,28,.70), 0 0 0 6px rgba(143,184,216,.07);
       overflow:hidden; position:relative;
     }
     .about-frame-card img {
       width:100%; display:block;
-      -webkit-mask-image:linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,.45) 80%, transparent 100%);
-      mask-image:linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,.45) 80%, transparent 100%);
     }
 
     /* ══════════════════════════════
@@ -272,39 +310,7 @@
       outline:none;
     }
 
-    /* MARQUEE */
-    .marquee-wrap { overflow:hidden; }
-    .marquee-row  { overflow:hidden; margin-bottom:16px; }
-    .marquee-inner { display:flex; width:max-content; }
-    .marquee-inner.fwd { animation:scroll-fwd 46s linear infinite; }
-    .marquee-inner.rev { animation:scroll-rev 40s linear infinite; }
-    .marquee-row:hover .marquee-inner { animation-play-state:paused; }
 
-    .p-card, .p-ring {
-      width:260px; height:540px;
-      flex-shrink:0; border-radius:16px;
-      overflow:hidden; margin-left:16px;
-      position:relative;
-    }
-    .p-card { background:var(--bg-card); border:1px solid var(--border); }
-    .p-ring {
-      background:var(--bg-card);
-      border:2px solid rgba(143,184,216,.42);
-      box-shadow:0 0 22px rgba(143,184,216,.15);
-    }
-    .p-card img, .p-ring img {
-      width:100%; height:100%;
-      object-fit:contain; object-position:center top; display:block;
-    }
-
-    /* MARKER overlay — yellow highlighter on select cards */
-    .mk {
-      position:absolute; top:35%; left:0;
-      width:100%; height:22%; z-index:2; pointer-events:none;
-      background:rgba(255,215,0,.14);
-      border-top:1px solid rgba(255,215,0,.22);
-      border-bottom:1px solid rgba(255,215,0,.22);
-    }
 
     /* ══════════════════════════════
        SECTION 5 — מה קורה בשיחה
@@ -450,8 +456,7 @@
     @media (max-width:700px) {
       .wrap { padding:0 20px; }
       .about-split { grid-template-columns:1fr; gap:24px; text-align:center; }
-      .about-main-img { margin:0 auto; width:260px; }
-      .about-frame-card { max-width:220px; margin:0 auto; }
+      .about-frame-card { max-width:260px; margin:0 auto; }
       .fit-cols { grid-template-columns:1fr; gap:40px; }
       .call-card { padding:36px 22px; }
       .form-card { padding:36px 20px; }
@@ -511,147 +516,56 @@
   </div>
 </section>
 
-<div class="sdiv"></div>
-
 <!-- ════════════════════════════════
      SECTION 2 — ההזדהות
 ════════════════════════════════ -->
 <section class="sec">
   <div class="sec-glow"></div>
   <div class="wrap">
-    <h2 class="sec-h2 fu">
-      לדעת שיש בעיה בשיווק זה השלב הקל.<br>
-      להבין מה לעשות איתה פרקטית מחר בבוקר? זה כבר סיפור אחר.
+    <h2 class="sec-h2 fu" style="text-align:center; margin-left:auto; margin-right:auto;">
+      לדעת שיש לך בעיה שיווקית זה החלק הקל<br>
+      להבין מה לעשות עם זה מחר בבוקר? זה כבר סיפור אחר.
     </h2>
     <div class="fu d1">
       <p class="tried-intro">יכול להיות שכבר ניסית הכל:</p>
-      <ul class="tried-list">
-        <li>לקחת מנהלת סושיאל שלא הביאה תוצאות.</li>
-        <li>קנית קורס שיווק שמכר לך סיסמאות ריקות.</li>
-        <li>העלית סרטונים והשקעת בצילום.</li>
-      </ul>
-      <p class="tried-end">ועדיין, בסוף החודש את באותו מצב.</p>
+
+      <div class="pain-cards">
+
+        <div class="pain-card">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <p class="pain-title">לקחת מנהלת סושיאל</p>
+          <p class="pain-desc">שלחת לה תמונות, היא פרסמה, ובסוף החודש לא הגיעה אף פנייה חדשה.</p>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <p class="pain-title">קנית קורס שיווק</p>
+          <p class="pain-desc">קיבלת סיסמאות ריקות על "ערך" ו"קהל יעד", בלי שום כלי פרקטי ליישום.</p>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-icon">
+            <svg viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          </div>
+          <p class="pain-title">צילמת וערכת שעות סרטונים</p>
+          <p class="pain-desc">השקעת זמן, כסף וכוח — והסרטונים קיבלו מאות צפיות שלא הפכו ללקוחות.</p>
+        </div>
+
+      </div>
+
+      <p class="tried-end fu">עדיין, בסוף החודש נשארת באותו מצב.</p>
+
+      <p style="font-size:1.14rem;color:var(--text-dim);line-height:1.85;max-width:700px;margin:36px auto 0;text-align:center;">כדי להפוך את האבחון הזה לתוצאות בשטח, אני מזמינה אותך לשיחת אסטרטגיה וייעוץ ממוקדת (60 דקות) ללא עלות. בשיחה ננתח יחד את המחסום האישי שלך ונבין איך לייצר שיווק שעובד עבורך.</p>
     </div>
   </div>
 </section>
 
-<div class="sdiv"></div>
-
 <!-- ════════════════════════════════
-     SECTION 3 — ABOUT
-════════════════════════════════ -->
-<section class="sec">
-  <div class="sec-glow" style="background:radial-gradient(circle,rgba(143,184,216,.07) 0%,transparent 70%);"></div>
-  <div class="wrap">
-    <div class="about-split fu">
-      <img class="about-main-img" src="assets/photos/about.png" alt="אור קינדה">
-      <div class="about-frame-card">
-        <img src="assets/photos/photo4.png" alt="">
-      </div>
-      <div>
-        <h2 class="sec-h2" style="margin-bottom:24px;">
-          אז אם אנחנו עדיין לא מכירות,<br>נעים מאוד. אני אור קינדה.
-        </h2>
-        <p>בשנתיים האחרונות ליוויתי מגוון בעלות עסקים וראיתי את זה קורה שוב ושוב: נשים מוכשרות בטירוף שסוגרות את העסק רק כי אף אחד לא לימד אותן <span class="em-line">איך לגרום למומחיות שלהן להכניס כסף</span>.</p>
-        <p>ראיתי את הפער בין עסק שמושך לקוחות לעסק שרודף אחריהם.</p>
-        <p>זה לא קשור לכמות הפוסטים, לאיכות הצילום או לכמות העוקבים שלך. <strong>זה קשור למסרים השיווקיים ובאסטרטגיה שעוטפת את הכל.</strong></p>
-        <p>אני יודעת שזה נשמע כמו סלוגן שהרבה יועצים זורקים. אבל זה בדיוק מה שעבדתי עליו מאחורי הקלעים עם הלקוחות שלי.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="sdiv"></div>
-
-<!-- ════════════════════════════════
-     SECTION 4 — PROOF
-════════════════════════════════ -->
-<section class="proof-sec">
-
-  <div class="wrap">
-    <h2 class="proof-headline fu">
-      אבל אל תאמיני לי<br>
-      הנה מה שיש ללקוחות שלי להגיד
-    </h2>
-  </div>
-
-  <!-- VIDEO -->
-  <div class="wrap">
-    <div class="yt-player-wrap fu">
-      <video class="local-video" controls playsinline preload="metadata"
-        src="assets/social-proof/testimonial_h264.mp4">
-      </video>
-    </div>
-  </div>
-
-  <!-- MARQUEE — row 1: messages (with marker on select cards) -->
-  <div class="marquee-wrap fu" style="margin-top:64px;">
-    <div class="marquee-row">
-      <div class="marquee-inner fwd">
-        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1761.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1762.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1763.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1764.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1765.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1767.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1451.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1452.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1438.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1446.PNG" alt="" loading="lazy"></div>
-        <!-- duplicate -->
-        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1761.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1762.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1763.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1764.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1765.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1767.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1451.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1452.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1438.PNG" alt="" loading="lazy"></div>
-        <div class="p-card"><img src="assets/social-proof/IMG_1446.PNG" alt="" loading="lazy"></div>
-      </div>
-    </div>
-
-    <!-- MARQUEE — row 2: views/stats -->
-    <div class="marquee-row">
-      <div class="marquee-inner rev">
-        <div class="p-ring"><img src="assets/social-proof/IMG_1436.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1437.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1439.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1440.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1441.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1443.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1444.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1445.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1449.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1453.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1454.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1455.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1456.PNG" alt="" loading="lazy"></div>
-        <!-- duplicate -->
-        <div class="p-ring"><img src="assets/social-proof/IMG_1436.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1437.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1439.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1440.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1441.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1443.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1444.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1445.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1449.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1453.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1454.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1455.PNG" alt="" loading="lazy"></div>
-        <div class="p-ring"><img src="assets/social-proof/IMG_1456.PNG" alt="" loading="lazy"></div>
-      </div>
-    </div>
-  </div>
-
-</section>
-
-<div class="sdiv"></div>
-
-<!-- ════════════════════════════════
-     SECTION 5 — מה קורה בשיחה
+     SECTION 3 — מה קורה בשיחה (הועבר למעלה)
 ════════════════════════════════ -->
 <section class="sec">
   <div class="wrap">
@@ -679,17 +593,80 @@
   </div>
 </section>
 
-<div class="sdiv"></div>
+<!-- ════════════════════════════════
+     SECTION 4 — PROOF
+════════════════════════════════ -->
+<section class="proof-sec">
+
+  <div class="wrap">
+    <h2 class="proof-headline fu">
+      אבל אל תאמיני לי<br>
+      הנה מה שיש ללקוחות שלי להגיד
+    </h2>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="wrap">
+    <div class="yt-player-wrap fu">
+      <video class="local-video" controls playsinline preload="metadata"
+        src="assets/social-proof/testimonial_h264.mp4">
+      </video>
+    </div>
+  </div>
+
+  <!-- 5 תמונות המלצות — מארקי אינסופי -->
+  <div class="proof-marquee-wrap fu" style="margin-top:56px;">
+    <div class="proof-marquee-inner">
+      <!-- סט ראשון -->
+      <div class="proof-snap-img"><img src="assets/social-proof/1.png" alt="" loading="lazy"></div>
+      <div class="proof-snap-img"><img src="assets/social-proof/2.png" alt="" loading="lazy"></div>
+      <div class="proof-snap-img"><img src="assets/social-proof/3.png" alt="" loading="lazy"></div>
+      <div class="proof-snap-img"><img src="assets/social-proof/4.png" alt="" loading="lazy"></div>
+      <div class="proof-snap-img"><img src="assets/social-proof/5.png" alt="" loading="lazy"></div>
+      <!-- סט כפול ללופ חלק -->
+      <div class="proof-snap-img"><img src="assets/social-proof/1.png" alt="" loading="lazy"></div>
+      <div class="proof-snap-img"><img src="assets/social-proof/2.png" alt="" loading="lazy"></div>
+      <div class="proof-snap-img"><img src="assets/social-proof/3.png" alt="" loading="lazy"></div>
+      <div class="proof-snap-img"><img src="assets/social-proof/4.png" alt="" loading="lazy"></div>
+      <div class="proof-snap-img"><img src="assets/social-proof/5.png" alt="" loading="lazy"></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════
+     SECTION 5 — ABOUT
+════════════════════════════════ -->
+<section class="sec">
+  <div class="sec-glow" style="background:radial-gradient(circle,rgba(143,184,216,.07) 0%,transparent 70%);"></div>
+  <div class="wrap">
+    <div class="about-split fu">
+      <div class="about-frame-card">
+        <img src="assets/photos/תמונות דף נחיתה (4).png" alt="אור קינדה">
+      </div>
+      <div>
+        <h2 class="sec-h2" style="margin-bottom:24px;">
+          ולמקרה שאנחנו לא מכירות<br>נעים מאוד. אני אור קינדה.
+        </h2>
+        <p>בשנתיים האחרונות ליוויתי מגוון בעלות עסקים וראיתי את זה קורה שוב ושוב: נשים מוכשרות בטירוף שסוגרות את העסק רק כי אף אחד לא לימד אותן <span class="em-line">איך לגרום למומחיות שלהן להכניס כסף</span>.</p>
+        <p>ראיתי את הפער בין עסק שמושך לקוחות לעסק שרודף אחריהם.</p>
+        <p>זה לא קשור לכמות הפוסטים, לאיכות הצילום או לכמות העוקבים שלך. <strong>זה קשור למסרים השיווקיים ובאסטרטגיה שעוטפת את הכל.</strong></p>
+        <p>אני יודעת שזה נשמע כמו סלוגן שהרבה יועצים זורקים. אבל זה בדיוק מה שעשיתי מאחורי הקלעים ללקוחות שלי.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ════════════════════════════════
      SECTION 6 — QUALIFIER
 ════════════════════════════════ -->
 <section class="sec">
   <div class="wrap">
-    <h2 class="sec-h2 fu" style="text-align:center; margin:0 auto 48px;">חשוב לי שזה יהיה מדויק.</h2>
+    <h2 class="sec-h2 fu" style="text-align:center; margin:0 auto 16px;">חשוב לי שזה יהיה מדויק</h2>
+    <p class="fu" style="text-align:center; margin:0 auto 48px; max-width:600px;">וכדי שזה יקרה אני לא מקבלת כל אחת</p>
     <div class="fit-cols">
       <div class="fit-block fu">
-        <h3>זה בשבילך אם</h3>
+        <h3>זה מתאים אם את</h3>
         <ul class="fit-list">
           <li class="fit-row"><span class="fit-icon yes">✓</span><span class="fit-text">יש לך עסק פעיל ולקוחות מרוצים.</span></li>
           <li class="fit-row"><span class="fit-icon yes">✓</span><span class="fit-text">נמאס לך שהפניות לא עקביות.</span></li>
@@ -697,7 +674,7 @@
         </ul>
       </div>
       <div class="fit-block fu d1">
-        <h3>זה לא בשבילך אם</h3>
+        <h3>זה לא מתאים אם את</h3>
         <ul class="fit-list">
           <li class="fit-row"><span class="fit-icon no">✕</span><span class="fit-text">אין לך לקוחות בכלל (עדיין).</span></li>
           <li class="fit-row"><span class="fit-icon no">✕</span><span class="fit-text">את מחפשת "קוסמת" שתעשה את העבודה במקומך.</span></li>
@@ -799,6 +776,9 @@
     const s = document.getElementById('success-msg');
     s.style.display = 'block';
     s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+      window.location.href = 'https://landing-page-kindom.vercel.app/#';
+    }, 1800);
   }
 </script>
 </body>
