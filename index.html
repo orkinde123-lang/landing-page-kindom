@@ -53,26 +53,27 @@
     .fu.d3 { transition-delay:.36s; }
 
     /* ══ KEYFRAMES ══ */
-    @keyframes scroll-proof { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-
-    /* PROOF MARQUEE */
-    .proof-marquee-wrap { overflow:hidden; width:100%; }
+    /* PROOF GRID — סטטי */
+    .proof-marquee-wrap {
+      overflow-x: auto; width:100%;
+      padding: 0 36px 16px;
+      scrollbar-width: none;
+    }
+    .proof-marquee-wrap::-webkit-scrollbar { display:none; }
     .proof-marquee-inner {
       display:flex; width:max-content;
       direction:ltr;
-      animation:scroll-proof 36s linear infinite;
-      gap:24px;
+      gap:28px;
     }
-    .proof-marquee-wrap:hover .proof-marquee-inner { animation-play-state:paused; }
     .proof-snap-img {
-      flex-shrink:0; width:340px;
-      border-radius:18px; overflow:hidden;
+      flex-shrink:0; width:420px;
+      border-radius:20px; overflow:hidden;
       border:1px solid var(--border-hi);
       box-shadow:0 16px 48px rgba(9,15,28,.65);
     }
     .proof-snap-img img { width:100%; height:auto; display:block; }
     @media (max-width:700px) {
-      .proof-snap-img { width:240px; }
+      .proof-snap-img { width:280px; }
     }
 
     @keyframes btn-glow {
@@ -614,16 +615,9 @@
     </div>
   </div>
 
-  <!-- 5 תמונות המלצות — מארקי אינסופי -->
+  <!-- 5 תמונות המלצות — גדולות -->
   <div class="proof-marquee-wrap fu" style="margin-top:56px;">
     <div class="proof-marquee-inner">
-      <!-- סט ראשון -->
-      <div class="proof-snap-img"><img src="assets/social-proof/1.png" alt="" loading="lazy"></div>
-      <div class="proof-snap-img"><img src="assets/social-proof/2.png" alt="" loading="lazy"></div>
-      <div class="proof-snap-img"><img src="assets/social-proof/3.png" alt="" loading="lazy"></div>
-      <div class="proof-snap-img"><img src="assets/social-proof/4.png" alt="" loading="lazy"></div>
-      <div class="proof-snap-img"><img src="assets/social-proof/5.png" alt="" loading="lazy"></div>
-      <!-- סט כפול ללופ חלק -->
       <div class="proof-snap-img"><img src="assets/social-proof/1.png" alt="" loading="lazy"></div>
       <div class="proof-snap-img"><img src="assets/social-proof/2.png" alt="" loading="lazy"></div>
       <div class="proof-snap-img"><img src="assets/social-proof/3.png" alt="" loading="lazy"></div>
