@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בקשה למחיקת נתונים אישיים | אור סטודיו</title>
+  <meta name="description" content="בקשה למחיקת נתונים אישיים — אור סטודיו">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+
+    /* RESET */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* TOKENS */
+    :root {
+      --bg:          #090f1c;
+      --bg-card:     #0f1c30;
+      --accent:      #8fb8d8;
+      --accent-dim:  rgba(143,184,216,0.13);
+      --accent-glow: rgba(143,184,216,0.26);
+      --gold:        #c8a96e;
+      --green:       #4ade80;
+      --text:        #f0f2f5;
+      --text-dim:    rgba(240,242,245,0.75);
+      --text-muted:  rgba(240,242,245,0.45);
+      --text-faint:  rgba(240,242,245,0.22);
+      --border:      rgba(122,156,191,0.13);
+      --border-hi:   rgba(122,156,191,0.28);
+    }
+
+    html { direction: rtl; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* SCROLL REVEAL */
+    .fu {
+      opacity: 0; filter: blur(5px); transform: translateY(24px);
+      transition: opacity .7s ease, filter .7s ease, transform .7s ease;
+    }
+    .fu.vis { opacity:1; filter:blur(0); transform:translateY(0); }
+    .fu.d1 { transition-delay:.10s; }
+    .fu.d2 { transition-delay:.22s; }
+    .fu.d3 { transition-delay:.36s; }
+
+    /* KEYFRAMES */
+    @keyframes btn-glow {
+      0%,100% { box-shadow: 0 6px 36px rgba(240,242,245,.14); }
+      50%      { box-shadow: 0 8px 52px rgba(143,184,216,.32); }
+    }
+    @keyframes dot-pulse {
+      0%,100% { opacity:.5; } 50% { opacity:1; }
+    }
+
+    /* BG BLOBS */
+    .bg-deco { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+    .bg-blob { position:absolute; border-radius:50%; filter:blur(140px); opacity:.12; }
+
+    /* LAYOUT */
+    .wrap {
+      max-width: 720px; margin: 0 auto;
+      padding: 0 36px; position: relative; z-index:1;
+    }
+
+    main { flex: 1; }
+
+    /* GLOWING SECTION DIVIDER */
+    .sdiv {
+      position:relative; z-index:1;
+      height:1px;
+      background:linear-gradient(90deg, transparent 0%, rgba(143,184,216,.22) 40%, rgba(143,184,216,.22) 60%, transparent 100%);
+    }
+    .sdiv::after {
+      content:''; position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+      width:200px; height:24px;
+      background:radial-gradient(ellipse, rgba(143,184,216,.10) 0%, transparent 70%);
+    }
+
+    /* TYPOGRAPHY */
+    p {
+      color: var(--text-dim);
+      line-height: 1.85;
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+    p:last-child { margin-bottom: 0; }
+    strong, b { font-weight: 700; color: var(--text); }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 80px 0 56px;
+      position: relative; z-index:1;
+      background:
+        radial-gradient(ellipse 800px 500px at 60% 0%, rgba(22,37,71,.55) 0%, transparent 60%);
+    }
+
+    .header-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(143,184,216,.07);
+      border:1px solid rgba(143,184,216,.22);
+      color:var(--accent);
+      font-size:.78rem; font-weight:700;
+      padding:6px 20px; border-radius:99px;
+      margin-bottom:28px; letter-spacing:.09em; text-transform:uppercase;
+    }
+    .header-badge-dot {
+      width:5px; height:5px; border-radius:50%;
+      background:var(--accent);
+      animation:dot-pulse 2.5s ease-in-out infinite;
+    }
+
+    .page-h1 {
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -.026em;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    .page-h1 em { font-style:normal; color:var(--accent); }
+
+    .page-sub {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      line-height: 1.75;
+      max-width: 580px;
+    }
+
+    /* INFO SECTION */
+    .info-sec {
+      padding: 56px 0 64px;
+      position: relative; z-index:1;
+    }
+
+    .info-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-hi);
+      border-radius: 20px;
+      padding: 40px 44px;
+      position: relative; overflow: hidden;
+    }
+    .info-card::before {
+      content:''; position:absolute; top:-60px; left:50%;
+      transform:translateX(-50%); width:400px; height:240px;
+      background:radial-gradient(ellipse, rgba(143,184,216,.06) 0%, transparent 70%);
+      pointer-events:none;
+    }
+
+    .info-card h2 {
+      font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .law-list { list-style: none; margin: 16px 0 0; }
+    .law-list li {
+      position: relative;
+      padding-right: 22px;
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      line-height: 1.75;
+      margin-bottom: 10px;
+    }
+    .law-list li::before {
+      content:'·'; position:absolute; right:0;
+      color:var(--accent); font-size:1.4rem; line-height:1;
+      top:4px;
+    }
+
+    /* FORM SECTION */
+    .form-sec {
+      background:linear-gradient(160deg, var(--bg) 0%, #0c1c33 50%, #111f3a 100%);
+      padding:72px 0 96px;
+      position:relative; z-index:1;
+    }
+    .form-sec::before {
+      content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:600px; height:280px;
+      background:radial-gradient(ellipse, rgba(143,184,216,.06) 0%, transparent 70%);
+      pointer-events:none;
+    }
+
+    .form-card {
+      background:rgba(15,28,48,.92);
+      border:1.5px solid var(--border-hi);
+      border-radius:28px; padding:60px 56px;
+      box-shadow:0 36px 90px rgba(9,15,28,.60);
+    }
+    .form-card h2 {
+      font-size:clamp(1.4rem, 3.5vw, 2rem);
+      font-weight:800; text-align:center;
+      margin-bottom:10px; letter-spacing:-.022em;
+      color: var(--text);
+    }
+    .form-sub {
+      text-align:center; margin-bottom:36px;
+      color:var(--text-muted); font-size:1rem;
+    }
+
+    .form-group { margin-bottom:20px; }
+    .form-group label {
+      display:block; font-size:.9rem; font-weight:600;
+      color:var(--text-dim); margin-bottom:8px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width:100%; background:rgba(9,15,28,.85);
+      border:1.5px solid var(--border); border-radius:12px;
+      padding:16px 20px; font-size:1.05rem;
+      font-family:'Open Sans',sans-serif; color:var(--text);
+      direction:rtl; text-align:right; outline:none;
+      transition:border-color .2s, box-shadow .2s;
+      resize: vertical;
+    }
+    .form-group textarea {
+      min-height: 110px;
+      line-height: 1.7;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color:var(--border-hi);
+      box-shadow:0 0 0 3px rgba(143,184,216,.08);
+    }
+    input:-webkit-autofill, input:-webkit-autofill:focus {
+      -webkit-box-shadow:0 0 0 1000px rgba(9,15,28,.95) inset !important;
+      -webkit-text-fill-color:#f0f2f5 !important;
+    }
+
+    .optional-tag {
+      font-size:.78rem; font-weight:400;
+      color:var(--text-muted); margin-right:6px;
+    }
+
+    .submit-btn {
+      width:100%; background:var(--text); color:var(--bg);
+      font-weight:800; font-size:1.12rem;
+      padding:22px; border-radius:50px; border:none; cursor:pointer;
+      font-family:'Open Sans',sans-serif;
+      animation:btn-glow 3.5s ease-in-out infinite;
+      letter-spacing:.01em; margin-top:8px;
+      transition:transform .18s, background .18s;
+    }
+    .submit-btn:hover { transform:translateY(-2px); background:#fff; }
+    .submit-btn:active { transform:scale(.97); animation:none; }
+    .submit-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; animation:none; }
+
+    .form-note {
+      text-align:center; color:var(--text-faint);
+      font-size:.82rem; margin-top:14px;
+      line-height: 1.7;
+    }
+
+    .success-msg { display:none; text-align:center; padding:44px 20px; }
+    .success-icon { font-size:3rem; margin-bottom:18px; }
+
+    /* BACK LINK */
+    .back-wrap {
+      padding: 40px 0 60px;
+      position: relative; z-index:1;
+      text-align: center;
+    }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      color: var(--accent); font-size:.95rem; font-weight:600;
+      text-decoration: none;
+      border: 1px solid rgba(143,184,216,.22);
+      padding: 12px 28px; border-radius: 50px;
+      background: rgba(143,184,216,.05);
+      transition: background .18s, border-color .18s;
+    }
+    .back-link:hover {
+      background: rgba(143,184,216,.12);
+      border-color: rgba(143,184,216,.40);
+    }
+    .back-arrow { font-size:1rem; }
+
+    /* FOOTER */
+    footer {
+      padding:32px 20px; text-align:center;
+      color:var(--text-faint); font-size:.82rem;
+      border-top:1px solid var(--border);
+      position:relative; z-index:1;
+    }
+    footer p { color: var(--text-faint); font-size:.82rem; margin-bottom:0; }
+    footer a { color: var(--text-muted); text-decoration:none; }
+    footer a:hover { color: var(--accent); }
+
+    /* MOBILE */
+    @media (max-width:700px) {
+      .wrap { padding:0 20px; }
+      .page-header { padding:56px 0 36px; }
+      .info-card { padding:28px 22px; }
+      .form-card { padding:36px 20px; }
+    }
+    @media (max-width:400px) {
+      .page-h1 { font-size:1.7rem; }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="bg-deco">
+  <div class="bg-blob" style="width:800px;height:800px;background:#162547;top:-12%;right:-18%;"></div>
+  <div class="bg-blob" style="width:600px;height:600px;background:#0a1828;bottom:5%;left:-14%;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 8%,transparent 92%,var(--bg) 100%);pointer-events:none;"></div>
+</div>
+
+<main>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <div class="wrap">
+      <div class="header-badge fu">
+        <span class="header-badge-dot"></span>
+        פרטיות וזכויות מידע
+      </div>
+      <h1 class="page-h1 fu d1">
+        בקשה למחיקת<br><em>נתונים אישיים</em>
+      </h1>
+      <p class="page-sub fu d2">
+        זכותך לדעת אילו פרטים שמורים אצלנו ולבקש את מחיקתם. ממלאים את הטופס למטה ומטפלים בבקשה תוך 30 ימי עסקים.
+      </p>
+    </div>
+  </section>
+
+  <div class="sdiv"></div>
+
+  <!-- INFO SECTION -->
+  <section class="info-sec">
+    <div class="wrap">
+      <div class="info-card fu">
+        <h2>הזכות למחיקת מידע לפי חוק הגנת הפרטיות</h2>
+        <p>
+          חוק הגנת הפרטיות, התשמ"א-1981 ותקנותיו מעניקים לכל אדם את הזכות לגשת למידע שנאסף עליו ולבקש את תיקונו או מחיקתו.
+        </p>
+        <ul class="law-list">
+          <li>יש לך זכות לדעת אילו נתונים מוחזקים עלייך.</li>
+          <li>יש לך זכות לבקש מחיקה מלאה של הפרטים שמסרת.</li>
+          <li>הבקשה תטופל ותקבל אישור בכתב תוך 30 ימי עסקים.</li>
+          <li>לאחר המחיקה לא יישלחו אלייך עוד הודעות שיווקיות.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="sdiv"></div>
+
+  <!-- FORM -->
+  <section class="form-sec" id="form">
+    <div class="wrap">
+      <div class="form-card fu">
+        <div id="form-inner">
+          <h2>טופס בקשת מחיקה</h2>
+          <p class="form-sub">ממלאים, שולחים — מטפלים.</p>
+          <form id="delete-form" onsubmit="handleSubmit(event)" novalidate>
+
+            <div class="form-group">
+              <label for="f-name">שם מלא</label>
+              <input type="text" id="f-name" name="name" required placeholder="השם המלא שלך">
+            </div>
+
+            <div class="form-group">
+              <label for="f-contact">
+                כתובת מייל / מספר טלפון שבו נרשמת
+              </label>
+              <input type="text" id="f-contact" name="contact" required placeholder="מייל או טלפון">
+            </div>
+
+            <div class="form-group">
+              <label for="f-reason">
+                סיבת הבקשה
+                <span class="optional-tag">(לא חובה)</span>
+              </label>
+              <textarea id="f-reason" name="reason" placeholder="אפשר לפרט או להשאיר ריק"></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submit-btn">שלחי את הבקשה</button>
+          </form>
+          <p class="form-note">
+            אחזור אלייך תוך 30 ימי עסקים לאישור ביצוע המחיקה.<br>
+            לפניות ישירות: <a href="mailto:orkinde5@gmail.com" style="color:var(--accent);text-decoration:none;">orkinde5@gmail.com</a> | <a href="tel:0533413425" style="color:var(--accent);text-decoration:none;">053-3413425</a>
+          </p>
+        </div>
+
+        <div class="success-msg" id="success-msg">
+          <div class="success-icon">✓</div>
+          <h3 style="font-size:1.5rem;margin-bottom:12px;">הבקשה התקבלה</h3>
+          <p>תודה. נטפל בבקשה ונחזור אלייך תוך 30 ימי עסקים לאישור ביצוע המחיקה.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BACK LINK -->
+  <div class="back-wrap">
+    <a href="index.html" class="back-link">
+      <span class="back-arrow">&#8592;</span>
+      חזרה לדף הראשי
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <p>
+    © 2026 אור סטודיו | אור קינדה
+    &nbsp;·&nbsp;
+    <a href="tel:0533413425">053-3413425</a>
+    &nbsp;·&nbsp;
+    <a href="mailto:orkinde5@gmail.com">orkinde5@gmail.com</a>
+  </p>
+</footer>
+
+<script>
+  /* scroll reveal */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.fu').forEach(el => io.observe(el));
+
+  /* form submit */
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'שולחת...';
+    showSuccess();
+  }
+
+  function showSuccess() {
+    document.getElementById('form-inner').style.display = 'none';
+    const s = document.getElementById('success-msg');
+    s.style.display = 'block';
+    s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+</script>
+</body>
+</html>

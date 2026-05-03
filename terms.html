@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תקנון שימוש | אור סטודיו</title>
+  <meta name="description" content="תקנון שימוש באתר אור סטודיו — אור קינדה, ליווי שיווקי ואסטרטגיה">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+
+    /* ══ RESET ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ══ TOKENS ══ */
+    :root {
+      --bg:          #090f1c;
+      --bg-card:     #0f1c30;
+      --accent:      #8fb8d8;
+      --accent-dim:  rgba(143,184,216,0.13);
+      --accent-glow: rgba(143,184,216,0.26);
+      --gold:        #c8a96e;
+      --green:       #4ade80;
+      --red:         #f87171;
+      --text:        #f0f2f5;
+      --text-dim:    rgba(240,242,245,0.75);
+      --text-muted:  rgba(240,242,245,0.45);
+      --text-faint:  rgba(240,242,245,0.22);
+      --border:      rgba(122,156,191,0.13);
+      --border-hi:   rgba(122,156,191,0.28);
+    }
+
+    html { direction: rtl; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ══ KEYFRAMES ══ */
+    @keyframes btn-glow {
+      0%,100% { box-shadow: 0 6px 36px rgba(240,242,245,.14); }
+      50%      { box-shadow: 0 8px 52px rgba(143,184,216,.32); }
+    }
+
+    /* ══ BG BLOBS ══ */
+    .bg-deco { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+    .bg-blob { position:absolute; border-radius:50%; filter:blur(140px); opacity:.12; }
+
+    /* ══ LAYOUT ══ */
+    .wrap {
+      max-width: 900px; margin: 0 auto;
+      padding: 0 36px; position: relative; z-index:1;
+    }
+
+    /* ══ GLOWING SECTION DIVIDER ══ */
+    .sdiv {
+      position:relative; z-index:1;
+      height:1px;
+      background:linear-gradient(90deg, transparent 0%, rgba(143,184,216,.22) 40%, rgba(143,184,216,.22) 60%, transparent 100%);
+    }
+    .sdiv::after {
+      content:''; position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+      width:200px; height:24px;
+      background:radial-gradient(ellipse, rgba(143,184,216,.10) 0%, transparent 70%);
+    }
+
+    /* ══ TYPOGRAPHY ══ */
+    p {
+      color: var(--text-dim);
+      line-height: 1.85;
+      font-size: 1.14rem;
+      font-weight: 400;
+      margin-bottom: 20px;
+      max-width: 700px;
+    }
+    p:last-child { margin-bottom: 0; }
+    strong, b { font-weight: 700; color: var(--text); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ══ CTA BUTTON — BACK LINK ══ */
+    .back-btn {
+      display:inline-block;
+      background: transparent;
+      color: var(--accent);
+      font-family:'Open Sans',sans-serif;
+      font-weight:700; font-size:.95rem;
+      padding:12px 28px; border-radius:50px;
+      border:1.5px solid var(--border-hi);
+      text-decoration:none; cursor:pointer;
+      letter-spacing:.01em;
+      transition:transform .18s, background .18s, border-color .18s;
+    }
+    .back-btn:hover {
+      transform:translateY(-2px);
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      text-decoration: none;
+    }
+    .back-btn:active { transform:scale(.97); }
+
+    /* ══ LEGAL PAGE ══ */
+    .legal-page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 80px 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .legal-h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.22;
+      letter-spacing: -.024em;
+      margin-bottom: 12px;
+    }
+
+    .legal-meta {
+      color: var(--text-muted);
+      font-size: .88rem;
+      font-weight: 500;
+      margin-bottom: 60px;
+    }
+
+    .legal-section {
+      margin-bottom: 52px;
+    }
+
+    .legal-section h2 {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: -.012em;
+    }
+
+    .legal-section p {
+      max-width: 100%;
+    }
+
+    .legal-section ul {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .legal-section ul li {
+      position: relative;
+      padding-right: 22px;
+      font-size: 1.14rem;
+      color: var(--text-dim);
+      line-height: 1.85;
+      margin-bottom: 10px;
+    }
+
+    .legal-section ul li::before {
+      content: '·';
+      position: absolute;
+      right: 0;
+      color: var(--accent);
+      font-size: 1.4rem;
+      line-height: 1;
+      top: 6px;
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      padding:32px 20px; text-align:center;
+      color:var(--text-faint); font-size:.82rem;
+      border-top:1px solid var(--border);
+      position:relative; z-index:1;
+    }
+    footer p { color: var(--text-faint); font-size:.82rem; margin:0; max-width:100%; }
+    footer a { color: var(--text-muted); text-decoration:none; }
+    footer a:hover { color: var(--accent); }
+
+    /* ══ MOBILE ══ */
+    @media (max-width:700px) {
+      .legal-page { padding: 48px 20px; }
+      .wrap { padding: 0 20px; }
+      p, .legal-section ul li { font-size: 1.05rem; }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="bg-deco">
+  <div class="bg-blob" style="width:800px;height:800px;background:#162547;top:-12%;right:-18%;"></div>
+  <div class="bg-blob" style="width:600px;height:600px;background:#0a1828;bottom:5%;left:-14%;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 8%,transparent 92%,var(--bg) 100%);pointer-events:none;"></div>
+</div>
+
+<!-- ════════════════════════════════
+     BACK LINK
+════════════════════════════════ -->
+<div class="wrap" style="padding-top:40px; padding-bottom:0;">
+  <a href="index.html" class="back-btn">&#8594; חזרה לדף הראשי</a>
+</div>
+
+<!-- ════════════════════════════════
+     LEGAL CONTENT
+════════════════════════════════ -->
+<div class="legal-page">
+
+  <h1 class="legal-h1">תקנון שימוש</h1>
+  <p class="legal-meta">עדכון אחרון: מאי 2026</p>
+
+  <!-- 1. כללי -->
+  <div class="legal-section">
+    <h2>1. כללי</h2>
+    <p>אתר זה מופעל על ידי <strong>אור סטודיו</strong>, בניהול אור קינדה (להלן: "אור סטודיו" או "אנחנו").</p>
+    <p>מטרת האתר היא הצגת השירותים הניתנים על ידי אור סטודיו בתחומי הליווי השיווקי, האסטרטגיה וניהול הסושיאל, וכן אפשרות ליצירת קשר לצורך בחינת שיתוף פעולה.</p>
+    <p>השימוש באתר מהווה הסכמה לתנאי תקנון זה. אם אינך מסכימה לתנאים, נא הפסיקי את השימוש באתר.</p>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- 2. שירותים -->
+  <div class="legal-section" style="margin-top:40px;">
+    <h2>2. שירותים</h2>
+    <p>אור סטודיו מציעה מגוון שירותים שיווקיים לבעלות עסקים ולארגונים, ובהם:</p>
+    <ul>
+      <li>ייעוץ שיווקי</li>
+      <li>ניהול סושיאל</li>
+      <li>ליווי שיווקי 1:1</li>
+    </ul>
+    <p>תיאור מלא ועדכני של השירותים, לרבות מחירים ותנאים, מועבר ישירות ללקוחה עם פנייתה ובהתאם לצרכים הספציפיים של כל פרויקט.</p>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- 3. רישום וקשר -->
+  <div class="legal-section" style="margin-top:40px;">
+    <h2>3. רישום וקשר</h2>
+    <p>יצירת הקשר דרך הטופס באתר אינה מהווה התחייבות מצד מי מהצדדים לביצוע עסקה. מילוי הטופס משמשת לצורך פנייה ראשונית בלבד.</p>
+    <p>לאחר קבלת הפרטים, אור סטודיו תחזור לפונה בתוך 24 שעות ביום עסקים לתיאום שיחה. שיחה ראשונה זו חינמית ואינה מחייבת רכישת שירות.</p>
+    <p>יש לוודא שהפרטים שהוזנו בטופס מדויקים. אור סטודיו לא תישא באחריות לנזק שנגרם כתוצאה מפרטים שגויים שמסרה הפונה.</p>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- 4. תשלומים -->
+  <div class="legal-section" style="margin-top:40px;">
+    <h2>4. תשלומים</h2>
+    <p>התשלום עבור שירותים יתבצע בהתאם להצעת המחיר או לסיכום שנוסח בין הצדדים בכתב. אין מחיר מחייב לפני חתימה על הצעה מסוימת.</p>
+    <p><strong>ביטול עסקה:</strong> ביטול עסקה ייעשה בהתאם להוראות חוק הגנת הצרכן, התשמ"א-1981, ותקנות הגנת הצרכן (ביטול עסקה), התשע"א-2010. במקרה של שירות שכבר החל, ינוכו דמי ביטול בהתאם לחוק ולאחוז השירות שסופק.</p>
+    <p>לשאלות בנוגע לביטולים, ניתן לפנות ישירות בדוא"ל: <a href="mailto:orkinde5@gmail.com">orkinde5@gmail.com</a> או בנייד: <a href="tel:0533413425">053-3413425</a>.</p>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- 5. קניין רוחני -->
+  <div class="legal-section" style="margin-top:40px;">
+    <h2>5. קניין רוחני</h2>
+    <p>כל התכנים המופיעים באתר זה, לרבות טקסטים, תמונות, עיצוב, לוגו, סרטונים, מסרים שיווקיים ומבנה הדפים, הם רכושה הבלעדי של אור קינדה ומוגנים בזכויות יוצרים.</p>
+    <p>חל איסור מוחלט להעתיק, לפרסם, להפיץ, לשכפל או לעשות שימוש כלשהו בתכנים אלו ללא אישור כתוב מראש מאור קינדה.</p>
+    <p>תכנים שיופקו במסגרת שירות שנרכש, תנאי השימוש בהם ייקבעו בהסכם הספציפי בין הצדדים.</p>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- 6. הגבלת אחריות -->
+  <div class="legal-section" style="margin-top:40px;">
+    <h2>6. הגבלת אחריות</h2>
+    <p>אור סטודיו מספקת שירותי ייעוץ ואסטרטגיה שיווקית על בסיס הידע והניסיון המקצועי שלה. עם זאת, <strong>אין כל התחייבות לתוצאות ספציפיות</strong> — הכנסות, לידים, עוקבים, מכירות או כל יעד עסקי אחר.</p>
+    <p>תוצאות השיווק תלויות במגוון גורמים שאינם בשליטת אור סטודיו בלבד, ובכלל זה: השקעת הלקוחה, תחום הפעילות, תנאי השוק, ותפקוד הפלטפורמות הדיגיטליות.</p>
+    <p>אור סטודיו לא תישא באחריות לנזק ישיר, עקיף או תוצאתי שנגרם כתוצאה מהסתמכות על המידע באתר או מהשירותים הניתנים, מעבר לסכום ששולם בפועל.</p>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- 7. פרטיות -->
+  <div class="legal-section" style="margin-top:40px;">
+    <h2>7. פרטיות</h2>
+    <p>אור סטודיו מחויבת לשמירה על פרטיות המשתמשות. המידע שנמסר דרך טופס הפנייה (שם, טלפון, תחום עיסוק) ישמש לצורך יצירת קשר בלבד ולא יועבר לצדדים שלישיים ללא הסכמה מפורשת.</p>
+    <p>לפרטים נוספים על אופן עיבוד המידע, ניתן לפנות ישירות בדוא"ל: <a href="mailto:orkinde5@gmail.com">orkinde5@gmail.com</a>.</p>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- 8. שינויים בתקנון -->
+  <div class="legal-section" style="margin-top:40px;">
+    <h2>8. שינויים בתקנון</h2>
+    <p>אור סטודיו שומרת לעצמה את הזכות לעדכן תקנון זה בכל עת, ללא הודעה מוקדמת. הגרסה העדכנית תמיד זו המפורסמת בדף זה, ותאריך העדכון מצוין בראשו.</p>
+    <p>המשך השימוש באתר לאחר שינויים בתקנון מהווה הסכמה לתנאים המעודכנים.</p>
+  </div>
+
+  <div class="sdiv"></div>
+
+  <!-- 9. יצירת קשר -->
+  <div class="legal-section" style="margin-top:40px;">
+    <h2>9. יצירת קשר</h2>
+    <p>לכל שאלה, פנייה או בקשה בנוגע לתקנון זה או לשירותים:</p>
+    <ul>
+      <li><strong>שם:</strong> אור קינדה | אור סטודיו</li>
+      <li><strong>נייד:</strong> <a href="tel:0533413425">053-3413425</a></li>
+      <li><strong>דוא"ל:</strong> <a href="mailto:orkinde5@gmail.com">orkinde5@gmail.com</a></li>
+    </ul>
+    <p style="margin-top:16px; color: var(--text-muted); font-size:.92rem;">ימי עסקים: ראשון עד חמישי, 9:00-18:00</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>
+      &copy; 2026 אור קינדה | שיווק ואסטרטגיה
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <a href="index.html">דף הבית</a>
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <a href="privacy.html">מדיניות פרטיות</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

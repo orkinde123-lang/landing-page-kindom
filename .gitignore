@@ -1,0 +1,18 @@
+# Original large video files (keeping only H.264 version)
+assets/social-proof/testimonial.mp4
+assets/social-proof/סרטוני המלצה אור.mp4
+
+# Private project files
+CLAUDE.md
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local env
+.env
+.env.local

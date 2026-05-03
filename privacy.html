@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מדיניות פרטיות | אור סטודיו</title>
+  <meta name="description" content="מדיניות הפרטיות של אור סטודיו — אור קינדה">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+
+    /* ══ RESET ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ══ TOKENS ══ */
+    :root {
+      --bg:          #090f1c;
+      --bg-card:     #0f1c30;
+      --accent:      #8fb8d8;
+      --accent-dim:  rgba(143,184,216,0.13);
+      --accent-glow: rgba(143,184,216,0.26);
+      --gold:        #c8a96e;
+      --text:        #f0f2f5;
+      --text-dim:    rgba(240,242,245,0.75);
+      --text-muted:  rgba(240,242,245,0.45);
+      --text-faint:  rgba(240,242,245,0.22);
+      --border:      rgba(122,156,191,0.13);
+      --border-hi:   rgba(122,156,191,0.28);
+    }
+
+    html { direction: rtl; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ══ BG BLOBS ══ */
+    .bg-deco { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+    .bg-blob { position: absolute; border-radius: 50%; filter: blur(140px); opacity: .12; }
+
+    /* ══ LAYOUT ══ */
+    .wrap {
+      max-width: 900px; margin: 0 auto;
+      padding: 0 36px; position: relative; z-index: 1;
+    }
+
+    /* ══ LEGAL PAGE ══ */
+    .legal-page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 80px 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ══ H1 ══ */
+    .legal-h1 {
+      font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+      letter-spacing: -.022em;
+      margin-bottom: 12px;
+    }
+
+    .legal-h1-sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      margin-bottom: 56px;
+    }
+
+    /* ══ SECTION ══ */
+    .legal-section {
+      margin-bottom: 44px;
+      padding-bottom: 44px;
+      border-bottom: 1px solid var(--border);
+    }
+    .legal-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .legal-section h2 {
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 16px;
+      letter-spacing: -.012em;
+    }
+
+    .legal-section p {
+      color: var(--text-dim);
+      line-height: 1.85;
+      font-size: 1.07rem;
+      font-weight: 400;
+      margin-bottom: 14px;
+      max-width: 100%;
+    }
+    .legal-section p:last-child { margin-bottom: 0; }
+
+    .legal-section a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .legal-section a:hover { opacity: .8; }
+
+    /* ══ BACK LINK ══ */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: .9rem;
+      font-weight: 600;
+      text-decoration: none;
+      margin-bottom: 52px;
+      transition: color .18s;
+    }
+    .back-link:hover { color: var(--accent); }
+
+    /* ══ DIVIDER ══ */
+    .sdiv {
+      position: relative; z-index: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(143,184,216,.22) 40%, rgba(143,184,216,.22) 60%, transparent 100%);
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      padding: 32px 20px; text-align: center;
+      color: var(--text-faint); font-size: .82rem;
+      border-top: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+
+    /* ══ MOBILE ══ */
+    @media (max-width: 700px) {
+      .legal-page { padding: 52px 20px; }
+      .legal-section p { font-size: 1rem; }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="bg-deco">
+  <div class="bg-blob" style="width:800px;height:800px;background:#162547;top:-12%;right:-18%;"></div>
+  <div class="bg-blob" style="width:600px;height:600px;background:#0a1828;bottom:5%;left:-14%;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 8%,transparent 92%,var(--bg) 100%);pointer-events:none;"></div>
+</div>
+
+<main>
+  <div class="legal-page">
+
+    <a href="index.html" class="back-link">&#8594; חזרה לדף הבית</a>
+
+    <h1 class="legal-h1">מדיניות פרטיות</h1>
+    <p class="legal-h1-sub">עדכון אחרון: מאי 2026</p>
+
+    <!-- 1. מבוא -->
+    <div class="legal-section">
+      <h2>1. מבוא</h2>
+      <p>אור סטודיו, בניהול אור קינדה, מחויבת להגנה על פרטיות המשתמשים והמתעניינים בשירותים שלה.</p>
+      <p>מדיניות זו מסבירה אילו נתונים נאספים, כיצד הם מעובדים ומאוחסנים, ומה הזכויות שלך בנוגע אליהם. השימוש באתר ובטפסים שבו מהווה הסכמה למדיניות זו.</p>
+    </div>
+
+    <!-- 2. אילו נתונים נאספים -->
+    <div class="legal-section">
+      <h2>2. אילו נתונים נאספים</h2>
+      <p>כאשר את ממלאת את טופס הפנייה באתר, נאספים הפרטים הבאים:</p>
+      <p><strong>שם מלא</strong> — לצורך פנייה אישית ומעקב אחר הפנייה.</p>
+      <p><strong>מספר טלפון</strong> — לצורך יצירת קשר לתיאום השיחה.</p>
+      <p><strong>כתובת מייל</strong> — לצורך תקשורת שוטפת ושליחת חומרים רלוונטיים.</p>
+      <p><strong>תחום עיסוק</strong> — על מנת להתאים את השיחה לצרכים הספציפיים של העסק שלך.</p>
+      <p>לא נאספים נתונים רגישים כגון פרטי תשלום, מספרי זהות או מידע רפואי.</p>
+    </div>
+
+    <!-- 3. מטרות העיבוד -->
+    <div class="legal-section">
+      <h2>3. מטרות העיבוד</h2>
+      <p>הנתונים שנאספים משמשים למטרות הבאות בלבד:</p>
+      <p><strong>יצירת קשר</strong> — חזרה אלייך לתיאום שיחת הייעוץ או מתן מענה לפנייתך.</p>
+      <p><strong>ניהול לידים ב-CRM</strong> — הנתונים מוזנים למערכת רב-מסר לניהול תהליך ההתקשרות מול לקוחות פוטנציאליים.</p>
+      <p>לא מתבצע עיבוד אוטומטי לקבלת החלטות המשפיעות עלייך, ולא נעשה שימוש בנתונים לצרכי פרסום שאינו קשור ישירות לשירותי אור סטודיו.</p>
+    </div>
+
+    <!-- 4. שיתוף נתונים -->
+    <div class="legal-section">
+      <h2>4. שיתוף נתונים עם צדדים שלישיים</h2>
+      <p>הנתונים שלך לא נמכרים ולא מועברים לצדדים שלישיים לצרכים מסחריים.</p>
+      <p>הנתונים עשויים להגיע לספקי שירות טכנולוגיים הנחוצים לפעילות השוטפת של העסק בלבד: מערכת רב-מסר לניהול CRM, Meta (Facebook/Instagram) לצרכי פיקסל ומעקב ביצועים, וגוגל לניתוח תנועה באתר. ספקים אלו פועלים תחת מדיניות הפרטיות שלהם ואינם רשאים להשתמש בנתונים לצרכים אחרים.</p>
+    </div>
+
+    <!-- 5. עוגיות ומעקב -->
+    <div class="legal-section">
+      <h2>5. עוגיות ומעקב</h2>
+      <p>האתר משתמש בכלי מעקב וניתוח לשיפור הביצועים והחוויה:</p>
+      <p><strong>Meta Pixel (פיקסל מטא)</strong> — מאפשר מדידת אפקטיביות פרסום ב-Facebook ו-Instagram, ומעקב אחר פעולות שמתבצעות באתר. מידע נוסף: <a href="https://www.facebook.com/privacy/policy/" target="_blank" rel="noopener">מדיניות הפרטיות של Meta</a>.</p>
+      <p><strong>Google Analytics</strong> — ניתוח תנועה ושימוש באתר, ללא זיהוי אישי. מידע נוסף: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">מדיניות הפרטיות של Google</a>.</p>
+      <p>ניתן לבטל מעקב של Google Analytics דרך <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">הכלי הרשמי של גוגל</a>. לביטול מעקב של Meta, ניתן להשתמש בהגדרות הפרסום של חשבון Facebook.</p>
+    </div>
+
+    <!-- 6. אחסון ואבטחה -->
+    <div class="legal-section">
+      <h2>6. אחסון ואבטחה</h2>
+      <p>הנתונים מאוחסנים בשרתי ספקי השירות שאיתם אנו עובדים — בעיקר מערכת רב-מסר ו-Meta. ספקים אלו מחויבים לסטנדרטים גבוהים של אבטחת מידע.</p>
+      <p>אנו נוקטים באמצעים סבירים למניעת גישה בלתי מורשית לנתונים. עם זאת, אין אפשרות להבטיח אבטחה מוחלטת של כל מידע המועבר דרך האינטרנט.</p>
+      <p>הנתונים מוחזקים כל עוד הם רלוונטיים לפעילות העסקית, ונמחקים לפי בקשה (ראי סעיף 7).</p>
+    </div>
+
+    <!-- 7. זכויות המשתמש -->
+    <div class="legal-section">
+      <h2>7. הזכויות שלך</h2>
+      <p>בהתאם לחוק הגנת הפרטיות, יש לך את הזכויות הבאות ביחס לנתונים שלך:</p>
+      <p><strong>גישה</strong> — לבקש לקבל עותק של הנתונים שנשמרו אצלנו.</p>
+      <p><strong>תיקון</strong> — לבקש תיקון של מידע שגוי או לא עדכני.</p>
+      <p><strong>מחיקה</strong> — לבקש מחיקת הנתונים שלך מהמערכות שלנו.</p>
+      <p>לבקשת מחיקת נתונים, ניתן להשתמש ב<a href="delete-data.html">טופס בקשת מחיקה</a> או לפנות ישירות לפרטי הקשר שבסעיף 8.</p>
+    </div>
+
+    <!-- 8. יצירת קשר -->
+    <div class="legal-section">
+      <h2>8. יצירת קשר</h2>
+      <p>לכל שאלה, בקשה או פנייה הנוגעת למדיניות פרטיות זו, ניתן לפנות אלינו:</p>
+      <p><strong>אור קינדה | אור סטודיו</strong></p>
+      <p>טלפון: <a href="tel:0533413425">053-3413425</a></p>
+      <p>מייל: <a href="mailto:orkinde5@gmail.com">orkinde5@gmail.com</a></p>
+    </div>
+
+    <!-- 9. עדכון המדיניות -->
+    <div class="legal-section">
+      <h2>9. עדכון המדיניות</h2>
+      <p>מדיניות פרטיות זו עשויה להתעדכן מעת לעת בהתאם לשינויים בפעילות העסקית או בדרישות החוק. גרסה עדכנית תמיד זמינה בדף זה.</p>
+      <p>המשך שימוש באתר לאחר פרסום עדכון למדיניות מהווה הסכמה לתנאים המעודכנים.</p>
+    </div>
+
+  </div>
+</main>
+
+<div class="sdiv"></div>
+
+<footer>
+  <p>© 2026 אור קינדה | שיווק ואסטרטגיה &nbsp;·&nbsp; <a href="index.html" style="color:inherit;text-decoration:underline;">דף הבית</a> &nbsp;·&nbsp; <a href="privacy.html" style="color:inherit;text-decoration:underline;">מדיניות פרטיות</a></p>
+</footer>
+
+</body>
+</html>

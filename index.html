@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>שיחת פיצוח | אור קינדה</title>
+  <meta name="description" content="שיחת ייעוץ אסטרטגית חינמית עם אור קינדה">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+
+    /* ══ RESET ══ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ══ TOKENS ══ */
+    :root {
+      --bg:          #090f1c;
+      --bg-card:     #0f1c30;
+      --accent:      #8fb8d8;
+      --accent-dim:  rgba(143,184,216,0.13);
+      --accent-glow: rgba(143,184,216,0.26);
+      --gold:        #c8a96e;
+      --green:       #4ade80;
+      --red:         #f87171;
+      --text:        #f0f2f5;
+      --text-dim:    rgba(240,242,245,0.75);
+      --text-muted:  rgba(240,242,245,0.45);
+      --text-faint:  rgba(240,242,245,0.22);
+      --border:      rgba(122,156,191,0.13);
+      --border-hi:   rgba(122,156,191,0.28);
+    }
+
+    html { direction: rtl; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ══ SCROLL REVEAL ══ */
+    .fu {
+      opacity: 0; filter: blur(5px); transform: translateY(24px);
+      transition: opacity .7s ease, filter .7s ease, transform .7s ease;
+    }
+    .fu.vis { opacity:1; filter:blur(0); transform:translateY(0); }
+    .fu.d1 { transition-delay:.10s; }
+    .fu.d2 { transition-delay:.22s; }
+    .fu.d3 { transition-delay:.36s; }
+
+    /* ══ KEYFRAMES ══ */
+    @keyframes scroll-fwd { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    @keyframes scroll-rev { from{transform:translateX(-50%)} to{transform:translateX(0)} }
+    @keyframes btn-glow {
+      0%,100% { box-shadow: 0 6px 36px rgba(240,242,245,.14); }
+      50%      { box-shadow: 0 8px 52px rgba(143,184,216,.32); }
+    }
+    @keyframes dot-pulse {
+      0%,100% { opacity:.5; } 50% { opacity:1; }
+    }
+
+    /* ══ BG BLOBS ══ */
+    .bg-deco { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+    .bg-blob { position:absolute; border-radius:50%; filter:blur(140px); opacity:.12; }
+
+    /* ══ LAYOUT ══ */
+    .wrap {
+      max-width: 900px; margin: 0 auto;
+      padding: 0 36px; position: relative; z-index:1;
+    }
+
+    /* ══ GLOWING SECTION DIVIDER ══ */
+    .sdiv {
+      position:relative; z-index:1;
+      height:1px;
+      background:linear-gradient(90deg, transparent 0%, rgba(143,184,216,.22) 40%, rgba(143,184,216,.22) 60%, transparent 100%);
+    }
+    .sdiv::after {
+      content:''; position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+      width:200px; height:24px;
+      background:radial-gradient(ellipse, rgba(143,184,216,.10) 0%, transparent 70%);
+    }
+
+    /* ══ TYPOGRAPHY ══ */
+    .sec-h2 {
+      font-size: clamp(1.45rem, 3.2vw, 2.15rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.38;
+      margin-bottom: 32px;
+      max-width: 700px;
+    }
+
+    p {
+      color: var(--text-dim);
+      line-height: 1.85;
+      font-size: 1.14rem;
+      font-weight: 400;
+      margin-bottom: 20px;
+      max-width: 700px;
+    }
+    p:last-child { margin-bottom: 0; }
+    strong, b { font-weight: 700; color: var(--text); }
+    .em-line { font-weight:700; color:var(--text); border-bottom:1.5px solid rgba(240,242,245,.32); padding-bottom:1px; }
+    .em-gold  { font-weight:700; color:var(--gold); }
+
+    /* ══ SECTION BASE ══ */
+    .sec { padding: 96px 0; position: relative; z-index:1; }
+    .sec-glow {
+      position:absolute; pointer-events:none; z-index:0;
+      width:500px; height:500px; border-radius:50%;
+      background:radial-gradient(circle, rgba(143,184,216,.06) 0%, transparent 70%);
+      top:50%; left:50%; transform:translate(-50%,-50%);
+    }
+
+    /* ══ CTA BUTTON ══ */
+    .cta-btn {
+      display:inline-block;
+      background:var(--text); color:var(--bg);
+      font-family:'Open Sans',sans-serif;
+      font-weight:800; font-size:1.1rem;
+      padding:18px 54px; border-radius:50px;
+      text-decoration:none; border:none; cursor:pointer;
+      animation:btn-glow 3.5s ease-in-out infinite;
+      letter-spacing:.01em;
+      transition:transform .18s, background .18s;
+    }
+    .cta-btn:hover { transform:translateY(-3px); background:#fff; }
+    .cta-btn:active { transform:scale(.97); box-shadow:0 0 36px var(--accent-glow) !important; animation:none; }
+
+    .cta-note {
+      display:block; margin-top:13px;
+      color:var(--text-faint); font-size:.83rem; font-weight:500;
+    }
+    .cta-center { text-align:center; margin-top:52px; }
+
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    .hero {
+      min-height:100vh; display:flex; align-items:stretch;
+      position:relative; z-index:1; overflow:hidden;
+      background:
+        radial-gradient(ellipse 1000px 700px at 60% 28%, rgba(22,37,71,.60) 0%, transparent 60%),
+        radial-gradient(ellipse 600px 400px at 5% 82%,  rgba(143,184,216,.04) 0%, transparent 55%);
+    }
+    .hero-inner {
+      max-width:1120px; margin:0 auto;
+      padding:60px 36px 0;
+      display:grid; grid-template-columns:1fr 500px;
+      gap:48px; align-items:flex-start; width:100%;
+    }
+    .hero-text-col { padding-top:64px; padding-bottom:90px; }
+
+    .hero-badge {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(143,184,216,.07);
+      border:1px solid rgba(143,184,216,.22);
+      color:var(--accent);
+      font-size:.78rem; font-weight:700;
+      padding:6px 20px; border-radius:99px;
+      margin-bottom:28px; letter-spacing:.09em; text-transform:uppercase;
+    }
+    .hero-badge-dot {
+      width:5px; height:5px; border-radius:50%;
+      background:var(--accent);
+      animation:dot-pulse 2.5s ease-in-out infinite;
+    }
+
+    /* H1 — large + hierarchy */
+    .hero-h1 {
+      font-size: clamp(2.1rem, 5.5vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.16;
+      letter-spacing: -.026em;
+      margin-bottom: 26px;
+      color: var(--text);
+    }
+    .hero-h1 em { font-style:normal; color:var(--accent); }
+
+    /* Sub — regular, smaller */
+    .hero-sub {
+      font-size: clamp(1rem, 1.8vw, 1.18rem);
+      font-weight: 400;
+      color: var(--text-dim);
+      line-height: 1.85;
+      margin-bottom: 44px;
+      max-width: 520px;
+    }
+
+    /* HERO IMAGE */
+    .hero-img-col { display:flex; align-items:flex-start; }
+    .hero-img-col img {
+      width:100%; max-width:500px; display:block;
+      -webkit-mask-image:linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,.55) 72%, transparent 96%);
+      mask-image:linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,.55) 72%, transparent 96%);
+    }
+
+    /* ══════════════════════════════
+       SECTION 2 — PROBLEM
+    ══════════════════════════════ */
+    .tried-intro {
+      font-size: 1.14rem; color:var(--text-dim);
+      line-height:1.85; margin-bottom:18px; max-width:700px;
+    }
+    .tried-list { list-style:none; margin-bottom:20px; }
+    .tried-list li {
+      position:relative;
+      padding-right:24px;
+      font-size:1.14rem; color:var(--text-dim);
+      line-height:1.85; margin-bottom:10px; max-width:700px;
+    }
+    .tried-list li::before {
+      content:'·'; position:absolute; right:0;
+      color:var(--accent); font-size:1.4rem; line-height:1;
+      top:6px;
+    }
+    .tried-end {
+      font-size:1.14rem; font-weight:700;
+      color:var(--text); line-height:1.7; max-width:700px;
+    }
+
+    /* ══════════════════════════════
+       SECTION 3 — ABOUT
+    ══════════════════════════════ */
+    .about-split {
+      display:grid; grid-template-columns:310px 200px 1fr;
+      gap:36px; align-items:start;
+    }
+    .about-main-img {
+      width:310px; display:block;
+      -webkit-mask-image:linear-gradient(to bottom, black 0%, black 55%, rgba(0,0,0,.5) 78%, transparent 100%);
+      mask-image:linear-gradient(to bottom, black 0%, black 55%, rgba(0,0,0,.5) 78%, transparent 100%);
+    }
+    .about-frame-card {
+      border-radius:18px;
+      border:1.5px solid rgba(143,184,216,.34);
+      box-shadow:0 20px 56px rgba(9,15,28,.65), 0 0 0 5px rgba(143,184,216,.07);
+      overflow:hidden; position:relative;
+    }
+    .about-frame-card img {
+      width:100%; display:block;
+      -webkit-mask-image:linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,.45) 80%, transparent 100%);
+      mask-image:linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,.45) 80%, transparent 100%);
+    }
+
+    /* ══════════════════════════════
+       SECTION 4 — PROOF
+    ══════════════════════════════ */
+    .proof-sec { padding:96px 0; position:relative; z-index:1; }
+
+    .proof-headline {
+      font-size:clamp(1.8rem, 4vw, 2.9rem);
+      font-weight:800; letter-spacing:-.022em;
+      line-height:1.2; text-align:center; margin-bottom:56px;
+    }
+
+    /* VIDEO */
+    .yt-player-wrap {
+      max-width:300px; margin:0 auto 72px;
+      border-radius:20px; overflow:hidden;
+      border:1px solid var(--border-hi);
+      box-shadow:0 24px 64px rgba(9,15,28,.70);
+    }
+    .local-video {
+      width:100%; display:block;
+      aspect-ratio:9/16; background:var(--bg-card);
+      outline:none;
+    }
+
+    /* MARQUEE */
+    .marquee-wrap { overflow:hidden; }
+    .marquee-row  { overflow:hidden; margin-bottom:16px; }
+    .marquee-inner { display:flex; width:max-content; }
+    .marquee-inner.fwd { animation:scroll-fwd 46s linear infinite; }
+    .marquee-inner.rev { animation:scroll-rev 40s linear infinite; }
+    .marquee-row:hover .marquee-inner { animation-play-state:paused; }
+
+    .p-card, .p-ring {
+      width:260px; height:540px;
+      flex-shrink:0; border-radius:16px;
+      overflow:hidden; margin-left:16px;
+      position:relative;
+    }
+    .p-card { background:var(--bg-card); border:1px solid var(--border); }
+    .p-ring {
+      background:var(--bg-card);
+      border:2px solid rgba(143,184,216,.42);
+      box-shadow:0 0 22px rgba(143,184,216,.15);
+    }
+    .p-card img, .p-ring img {
+      width:100%; height:100%;
+      object-fit:contain; object-position:center top; display:block;
+    }
+
+    /* MARKER overlay — yellow highlighter on select cards */
+    .mk {
+      position:absolute; top:35%; left:0;
+      width:100%; height:22%; z-index:2; pointer-events:none;
+      background:rgba(255,215,0,.14);
+      border-top:1px solid rgba(255,215,0,.22);
+      border-bottom:1px solid rgba(255,215,0,.22);
+    }
+
+    /* ══════════════════════════════
+       SECTION 5 — מה קורה בשיחה
+    ══════════════════════════════ */
+    .call-card {
+      background:var(--bg-card);
+      border:1.5px solid var(--border-hi);
+      border-radius:24px; padding:56px 52px;
+      position:relative; overflow:hidden;
+      box-shadow:0 30px 90px rgba(9,15,28,.55);
+    }
+    .call-card::before {
+      content:''; position:absolute; top:-80px; left:50%;
+      transform:translateX(-50%); width:450px; height:300px;
+      background:radial-gradient(ellipse, rgba(143,184,216,.07) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .call-list { list-style:none; margin-top:36px; }
+    .call-list li {
+      display:flex; align-items:flex-start; gap:24px;
+      padding:22px 0; border-bottom:1px solid var(--border);
+      color:var(--text-dim); font-size:1.16rem; line-height:1.7;
+    }
+    .call-list li:last-child { border-bottom:none; }
+    .call-num {
+      color:var(--accent); font-size:1.45rem; font-weight:800;
+      flex-shrink:0; width:32px; margin-top:-2px; line-height:1;
+    }
+
+    /* ══════════════════════════════
+       SECTION 6 — QUALIFIER
+    ══════════════════════════════ */
+    .fit-cols { display:grid; grid-template-columns:1fr 1fr; gap:56px; }
+    .fit-block h3 {
+      font-size:clamp(1.3rem, 3vw, 1.75rem);
+      font-weight:700; margin-bottom:24px; letter-spacing:-.018em;
+    }
+    .fit-list { list-style:none; }
+    .fit-row {
+      display:flex; align-items:flex-start; gap:16px;
+      padding:15px 0; border-bottom:1px solid rgba(122,156,191,.09);
+    }
+    .fit-row:last-child { border-bottom:none; }
+    .fit-icon { flex-shrink:0; margin-top:2px; width:22px; font-weight:700; font-size:1rem; }
+    .fit-icon.yes { color:var(--green); }
+    .fit-icon.no  { color:var(--red); }
+    .fit-text { font-size:1.1rem; font-weight:500; color:var(--text-dim); line-height:1.65; }
+
+    /* ══════════════════════════════
+       FORM SECTION
+    ══════════════════════════════ */
+    .form-sec {
+      background:linear-gradient(160deg, var(--bg) 0%, #0c1c33 50%, #111f3a 100%);
+      padding:110px 0; position:relative; z-index:1;
+    }
+    .form-sec::before {
+      content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:600px; height:280px;
+      background:radial-gradient(ellipse, rgba(143,184,216,.06) 0%, transparent 70%);
+      pointer-events:none;
+    }
+    .closing-quote {
+      font-size:clamp(1.15rem, 2.8vw, 1.65rem);
+      font-weight:600; font-style:italic;
+      color:var(--text-dim); line-height:1.65;
+      text-align:center; max-width:640px;
+      margin:0 auto 56px;
+    }
+    .form-card {
+      background:rgba(15,28,48,.92);
+      border:1.5px solid var(--border-hi);
+      border-radius:28px; padding:60px 56px;
+      box-shadow:0 36px 90px rgba(9,15,28,.60);
+    }
+    .form-card h2 {
+      font-size:clamp(1.6rem, 4vw, 2.4rem);
+      font-weight:800; text-align:center;
+      margin-bottom:10px; letter-spacing:-.022em;
+    }
+    .form-sub {
+      text-align:center; margin-bottom:36px;
+      color:var(--text-muted); font-size:1.04rem;
+    }
+    .form-group { margin-bottom:20px; }
+    .form-group label {
+      display:block; font-size:.9rem; font-weight:600;
+      color:var(--text-dim); margin-bottom:8px;
+    }
+    .form-group input {
+      width:100%; background:rgba(9,15,28,.85);
+      border:1.5px solid var(--border); border-radius:12px;
+      padding:16px 20px; font-size:1.05rem;
+      font-family:'Open Sans',sans-serif; color:var(--text);
+      direction:rtl; text-align:right; outline:none;
+      transition:border-color .2s, box-shadow .2s;
+    }
+    .form-group input[type="tel"] { direction:ltr; text-align:right; }
+    .form-group input:focus {
+      border-color:var(--border-hi);
+      box-shadow:0 0 0 3px rgba(143,184,216,.08);
+    }
+    input:-webkit-autofill, input:-webkit-autofill:focus {
+      -webkit-box-shadow:0 0 0 1000px rgba(9,15,28,.95) inset !important;
+      -webkit-text-fill-color:#f0f2f5 !important;
+    }
+    .submit-btn {
+      width:100%; background:var(--text); color:var(--bg);
+      font-weight:800; font-size:1.18rem;
+      padding:22px; border-radius:50px; border:none; cursor:pointer;
+      font-family:'Open Sans',sans-serif;
+      animation:btn-glow 3.5s ease-in-out infinite;
+      letter-spacing:.01em; margin-top:8px;
+      transition:transform .18s, background .18s;
+    }
+    .submit-btn:hover { transform:translateY(-2px); background:#fff; }
+    .submit-btn:active { transform:scale(.97); animation:none; }
+    .submit-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; animation:none; }
+    .form-note { text-align:center; color:var(--text-faint); font-size:.82rem; margin-top:14px; }
+    .success-msg { display:none; text-align:center; padding:44px 20px; }
+    .success-icon { font-size:3rem; margin-bottom:18px; }
+
+    /* ══ FOOTER ══ */
+    footer {
+      padding:32px 20px; text-align:center;
+      color:var(--text-faint); font-size:.82rem;
+      border-top:1px solid var(--border);
+      position:relative; z-index:1;
+    }
+
+    /* ══ MOBILE ══ */
+    @media (max-width:920px) {
+      .hero-inner {
+        grid-template-columns:1fr; padding:50px 24px 0;
+        gap:0; text-align:center;
+      }
+      .hero-img-col { justify-content:center; order:-1; }
+      .hero-img-col img { max-width:260px; }
+      .hero-text-col { padding-top:24px; padding-bottom:64px; }
+      .hero-sub { margin:0 auto 44px; }
+      .sec-h2 { margin-left:auto; margin-right:auto; }
+    }
+
+    @media (max-width:700px) {
+      .wrap { padding:0 20px; }
+      .about-split { grid-template-columns:1fr; gap:24px; text-align:center; }
+      .about-main-img { margin:0 auto; width:260px; }
+      .about-frame-card { max-width:220px; margin:0 auto; }
+      .fit-cols { grid-template-columns:1fr; gap:40px; }
+      .call-card { padding:36px 22px; }
+      .form-card { padding:36px 20px; }
+      .sec { padding:70px 0; }
+      .proof-sec { padding:70px 0; }
+      .cta-btn { padding:18px 32px; font-size:1rem; width:100%; text-align:center; display:block; }
+      .p-card, .p-ring { width:180px; height:375px; }
+      p, .tried-intro, .tried-list li, .tried-end { font-size:1.05rem; }
+    }
+
+    @media (max-width:400px) {
+      .hero-h1 { font-size:1.9rem; }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="bg-deco">
+  <div class="bg-blob" style="width:800px;height:800px;background:#162547;top:-12%;right:-18%;"></div>
+  <div class="bg-blob" style="width:600px;height:600px;background:#0a1828;bottom:5%;left:-14%;"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 8%,transparent 92%,var(--bg) 100%);pointer-events:none;"></div>
+</div>
+
+<!-- ════════════════════════════════
+     HERO
+════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <div class="hero-text-col">
+      <div class="hero-badge fu">
+        <span class="hero-badge-dot"></span>
+        שיחת ייעוץ אסטרטגית · חינמית · 60 דקות
+      </div>
+
+      <h1 class="hero-h1 fu d1">
+        את יודעת שאת מקצועית.<br>
+        הגיע הזמן שגם <em>השיווק שלך</em><br>יראה ככה בשטח.
+      </h1>
+
+      <p class="hero-sub fu d2">
+        שיחה אחת של 60 דקות שבה ננתח יחד<br>
+        <span style="white-space:nowrap">מה עוצר את השיווק שלך.</span>
+      </p>
+
+      <div class="fu d3">
+        <a href="#form" class="cta-btn">אני רוצה שיחת פיצוח</a>
+        <span class="cta-note">אני מקבלת עד 5 שיחות כאלו בחודש בלבד.</span>
+      </div>
+    </div>
+
+    <div class="hero-img-col fu d2">
+      <img src="assets/photos/1.png" alt="אור קינדה">
+    </div>
+
+  </div>
+</section>
+
+<div class="sdiv"></div>
+
+<!-- ════════════════════════════════
+     SECTION 2 — ההזדהות
+════════════════════════════════ -->
+<section class="sec">
+  <div class="sec-glow"></div>
+  <div class="wrap">
+    <h2 class="sec-h2 fu">
+      לדעת שיש בעיה בשיווק זה השלב הקל.<br>
+      להבין מה לעשות איתה פרקטית מחר בבוקר? זה כבר סיפור אחר.
+    </h2>
+    <div class="fu d1">
+      <p class="tried-intro">יכול להיות שכבר ניסית הכל:</p>
+      <ul class="tried-list">
+        <li>לקחת מנהלת סושיאל שלא הביאה תוצאות.</li>
+        <li>קנית קורס שיווק שמכר לך סיסמאות ריקות.</li>
+        <li>העלית סרטונים והשקעת בצילום.</li>
+      </ul>
+      <p class="tried-end">ועדיין, בסוף החודש את באותו מצב.</p>
+    </div>
+  </div>
+</section>
+
+<div class="sdiv"></div>
+
+<!-- ════════════════════════════════
+     SECTION 3 — ABOUT
+════════════════════════════════ -->
+<section class="sec">
+  <div class="sec-glow" style="background:radial-gradient(circle,rgba(143,184,216,.07) 0%,transparent 70%);"></div>
+  <div class="wrap">
+    <div class="about-split fu">
+      <img class="about-main-img" src="assets/photos/about.png" alt="אור קינדה">
+      <div class="about-frame-card">
+        <img src="assets/photos/photo4.png" alt="">
+      </div>
+      <div>
+        <h2 class="sec-h2" style="margin-bottom:24px;">
+          אז אם אנחנו עדיין לא מכירות,<br>נעים מאוד. אני אור קינדה.
+        </h2>
+        <p>בשנתיים האחרונות ליוויתי מגוון בעלות עסקים וראיתי את זה קורה שוב ושוב: נשים מוכשרות בטירוף שסוגרות את העסק רק כי אף אחד לא לימד אותן <span class="em-line">איך לגרום למומחיות שלהן להכניס כסף</span>.</p>
+        <p>ראיתי את הפער בין עסק שמושך לקוחות לעסק שרודף אחריהם.</p>
+        <p>זה לא קשור לכמות הפוסטים, לאיכות הצילום או לכמות העוקבים שלך. <strong>זה קשור למסרים השיווקיים ובאסטרטגיה שעוטפת את הכל.</strong></p>
+        <p>אני יודעת שזה נשמע כמו סלוגן שהרבה יועצים זורקים. אבל זה בדיוק מה שעבדתי עליו מאחורי הקלעים עם הלקוחות שלי.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sdiv"></div>
+
+<!-- ════════════════════════════════
+     SECTION 4 — PROOF
+════════════════════════════════ -->
+<section class="proof-sec">
+
+  <div class="wrap">
+    <h2 class="proof-headline fu">
+      אבל אל תאמיני לי<br>
+      הנה מה שיש ללקוחות שלי להגיד
+    </h2>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="wrap">
+    <div class="yt-player-wrap fu">
+      <video class="local-video" controls playsinline preload="metadata"
+        src="assets/social-proof/testimonial_h264.mp4">
+      </video>
+    </div>
+  </div>
+
+  <!-- MARQUEE — row 1: messages (with marker on select cards) -->
+  <div class="marquee-wrap fu" style="margin-top:64px;">
+    <div class="marquee-row">
+      <div class="marquee-inner fwd">
+        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1761.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1762.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1763.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1764.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1765.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1767.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1451.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1452.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1438.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1446.PNG" alt="" loading="lazy"></div>
+        <!-- duplicate -->
+        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1761.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1762.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1763.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1764.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1765.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1767.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1451.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><div class="mk"></div><img src="assets/social-proof/IMG_1452.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1438.PNG" alt="" loading="lazy"></div>
+        <div class="p-card"><img src="assets/social-proof/IMG_1446.PNG" alt="" loading="lazy"></div>
+      </div>
+    </div>
+
+    <!-- MARQUEE — row 2: views/stats -->
+    <div class="marquee-row">
+      <div class="marquee-inner rev">
+        <div class="p-ring"><img src="assets/social-proof/IMG_1436.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1437.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1439.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1440.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1441.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1443.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1444.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1445.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1449.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1453.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1454.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1455.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1456.PNG" alt="" loading="lazy"></div>
+        <!-- duplicate -->
+        <div class="p-ring"><img src="assets/social-proof/IMG_1436.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1437.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1439.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1440.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1441.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1443.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1444.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1445.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><div class="mk"></div><img src="assets/social-proof/IMG_1449.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1453.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1454.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1455.PNG" alt="" loading="lazy"></div>
+        <div class="p-ring"><img src="assets/social-proof/IMG_1456.PNG" alt="" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="sdiv"></div>
+
+<!-- ════════════════════════════════
+     SECTION 5 — מה קורה בשיחה
+════════════════════════════════ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="call-card fu">
+      <h2 class="sec-h2" style="margin-bottom:8px;">אז מה קורה בשיחה?</h2>
+      <ul class="call-list">
+        <li>
+          <span class="call-num">01</span>
+          <span>מאפיינות את העסק והקהל שלך.</span>
+        </li>
+        <li>
+          <span class="call-num">02</span>
+          <span>עוברות על הרשתות והנכסים הדיגיטליים שלך.</span>
+        </li>
+        <li>
+          <span class="call-num">03</span>
+          <span>מאבחנות מה החסם האמיתי שעוצר אותך כרגע.</span>
+        </li>
+      </ul>
+      <div class="cta-center">
+        <a href="#form" class="cta-btn">אני רוצה שיחת פיצוח</a>
+        <span class="cta-note">אני מקבלת עד 5 שיחות כאלו בחודש בלבד.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sdiv"></div>
+
+<!-- ════════════════════════════════
+     SECTION 6 — QUALIFIER
+════════════════════════════════ -->
+<section class="sec">
+  <div class="wrap">
+    <h2 class="sec-h2 fu" style="text-align:center; margin:0 auto 48px;">חשוב לי שזה יהיה מדויק.</h2>
+    <div class="fit-cols">
+      <div class="fit-block fu">
+        <h3>זה בשבילך אם</h3>
+        <ul class="fit-list">
+          <li class="fit-row"><span class="fit-icon yes">✓</span><span class="fit-text">יש לך עסק פעיל ולקוחות מרוצים.</span></li>
+          <li class="fit-row"><span class="fit-icon yes">✓</span><span class="fit-text">נמאס לך שהפניות לא עקביות.</span></li>
+          <li class="fit-row"><span class="fit-icon yes">✓</span><span class="fit-text">את מוכנה לשמוע את האמת בפנים.</span></li>
+        </ul>
+      </div>
+      <div class="fit-block fu d1">
+        <h3>זה לא בשבילך אם</h3>
+        <ul class="fit-list">
+          <li class="fit-row"><span class="fit-icon no">✕</span><span class="fit-text">אין לך לקוחות בכלל (עדיין).</span></li>
+          <li class="fit-row"><span class="fit-icon no">✕</span><span class="fit-text">את מחפשת "קוסמת" שתעשה את העבודה במקומך.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     FORM
+════════════════════════════════ -->
+<section class="form-sec" id="form">
+  <div class="wrap">
+
+    <blockquote class="closing-quote fu">
+      אי אפשר להמשיך באותו מסלול ולצפות לתוצאה שונה.<br>
+      בואי נבין מה באמת עוצר אותך.
+    </blockquote>
+
+    <div class="form-card fu">
+      <div id="form-inner">
+        <h2>שלחי לי את הפרטים</h2>
+        <p class="form-sub">אחזור אלייך תוך 24 שעות.</p>
+        <form id="consult-form" onsubmit="handleSubmit(event)" novalidate>
+          <div class="form-group">
+            <label for="f-name">שם מלא</label>
+            <input type="text" id="f-name" name="name" required placeholder="השם שלך">
+          </div>
+          <div class="form-group">
+            <label for="f-phone">טלפון</label>
+            <input type="tel" id="f-phone" name="phone" required placeholder="05X-XXXXXXX">
+          </div>
+          <div class="form-group">
+            <label for="f-biz">תחום עיסוק</label>
+            <input type="text" id="f-biz" name="business" required placeholder="לדוגמה: ספרות, אימון אישי, יעוץ...">
+          </div>
+          <button type="submit" class="submit-btn" id="submit-btn">שלחי לי את הפרטים ואחזור אלייך</button>
+        </form>
+        <p class="form-note">אני מקבלת עד 5 שיחות כאלו בחודש בלבד.</p>
+      </div>
+      <div class="success-msg" id="success-msg">
+        <div class="success-icon">✓</div>
+        <h3 style="font-size:1.5rem;margin-bottom:12px;">הפרטים התקבלו!</h3>
+        <p>תודה. אחזור אלייך תוך 24 שעות לתיאום השיחה.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 אור סטודיו | שיווק ואסטרטגיה</p>
+  <p style="margin-top:10px;">
+    <a href="terms.html" style="color:inherit;text-decoration:none;margin:0 12px;">תקנון</a>
+    <a href="privacy.html" style="color:inherit;text-decoration:none;margin:0 12px;">מדיניות פרטיות</a>
+    <a href="delete-data.html" style="color:inherit;text-decoration:none;margin:0 12px;">מחיקת נתונים</a>
+  </p>
+</footer>
+
+<script>
+  /* scroll reveal */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.fu').forEach(el => io.observe(el));
+
+  /* form submit */
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true; btn.textContent = 'שולחת...';
+
+    const name    = document.getElementById('f-name').value.trim();
+    const phone   = document.getElementById('f-phone').value.trim();
+    const biz     = document.getElementById('f-biz').value.trim();
+    const digits  = phone.replace(/\D/g, '');
+
+    try {
+      await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name, phone, business: biz,
+          /* synthetic email so Rav-Messer accepts the record */
+          email: digits ? `${digits}@form.orkinde.co.il` : `lead${Date.now()}@form.orkinde.co.il`,
+          source: 'שיחת פיצוח'
+        })
+      });
+    } catch(_) {}
+
+    showSuccess();
+  }
+
+  function showSuccess() {
+    document.getElementById('form-inner').style.display = 'none';
+    const s = document.getElementById('success-msg');
+    s.style.display = 'block';
+    s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+</script>
+</body>
+</html>
