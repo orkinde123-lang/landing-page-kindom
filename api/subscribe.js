@@ -1,7 +1,7 @@
 import { createHash, randomUUID } from 'node:crypto';
 
 const BASE_URL = 'https://api.responder.co.il/main';
-const LIST_ID  = 97929; // רשימת אבחון
+const LIST_ID  = 99461; // שיחת ייעוץ
 
 function buildAuthHeader() {
   const cKey    = process.env.RESPONDER_C_KEY;
