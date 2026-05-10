@@ -25,6 +25,31 @@ function buildAuthHeader() {
   ].join(',');
 }
 
+async function syncToKesher({ name, phone, business }) {
+  const webhookUrl = process.env.KESHER_WEBHOOK_URL;
+  if (!webhookUrl) return;
+
+  try {
+    const [firstName, ...rest] = (name || '').trim().split(' ');
+    const lastName = rest.join(' ');
+
+    const res = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        first_name: firstName || '',
+        last_name:  lastName  || '',
+        phone:      phone     || '',
+        source:     'שיחת פיצוח',
+        notes:      business  || '',
+      }),
+    });
+    console.log('KESHER sync:', res.status);
+  } catch (err) {
+    console.error('KESHER sync error:', err.message);
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -41,12 +66,15 @@ export default async function handler(req, res) {
     : `lead${Date.now()}@form.orkinde.co.il`;
 
   const subscriber = {
-    NAME:     `${firstName} ${lastName}`.trim(),
-    EMAIL:    email,
-    PHONE:    phone || '',
-    BUSINESS: business || '',
-    SOURCE:   'שיחת פיצוח',
+    NAME:   `${firstName} ${lastName}`.trim(),
+    EMAIL:  email,
+    PHONE:  phone || '',
+    DAY:    0,
+    SEND_0: 1,
+    NOTIFY: 0,
   };
+
+  console.log('Adding subscriber to list', LIST_ID, '| email:', email, '| name:', subscriber.NAME);
 
   try {
     const params = new URLSearchParams();
@@ -61,13 +89,22 @@ export default async function handler(req, res) {
       body: params.toString(),
     });
 
-    let data;
-    try { data = await response.json(); } catch { data = {}; }
+    const rawText = await response.text();
+    console.log('Responder HTTP:', response.status, '| body:', rawText);
 
-    return res.status(200).json({ ok: true, data });
+    let data = {};
+    try { data = JSON.parse(rawText); } catch { data = { raw: rawText }; }
+
+    if (!data?.status) {
+      console.error('Responder rejected subscriber. status:', response.status, 'data:', JSON.stringify(data));
+    }
+
+    await syncToKesher({ name: subscriber.NAME, phone: phone || '', business });
+
+    return res.status(200).json({ ok: true, responder: data });
 
   } catch (err) {
-    console.error('Rav-Messer error:', err.message);
+    console.error('Responder fetch error:', err.message);
     return res.status(200).json({ ok: true, note: 'queued' });
   }
 }
