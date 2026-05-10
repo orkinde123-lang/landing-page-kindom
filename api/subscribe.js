@@ -101,7 +101,7 @@ export default async function handler(req, res) {
 
     await syncToKesher({ name: subscriber.NAME, phone: phone || '', business });
 
-    return res.status(200).json({ ok: true, responder: data });
+    return res.status(200).json({ ok: true, responder: data, httpStatus: response.status });
 
   } catch (err) {
     console.error('Responder fetch error:', err.message);
