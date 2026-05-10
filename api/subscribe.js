@@ -69,9 +69,6 @@ export default async function handler(req, res) {
     NAME:   `${firstName} ${lastName}`.trim(),
     EMAIL:  email,
     PHONE:  phone || '',
-    DAY:    0,
-    SEND_0: 1,
-    NOTIFY: 0,
   };
 
   console.log('Adding subscriber to list', LIST_ID, '| email:', email, '| name:', subscriber.NAME);
