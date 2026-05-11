@@ -1,28 +1,32 @@
-import { createHash, randomUUID } from 'node:crypto';
+const GRAPH_BASE      = 'https://graph.responder.live/v2';
+const CLIENT_ID       = '143';
+const CLIENT_SECRET   = '4oehPjI7ZJhOg6K9bP4zam0XTec147EfS9DSW2S0';
+const USER_TOKEN      = 'a208b32e03c8e0a756cfbab7b4dc84c549628ab3fd0f9c4d98c60e7976a9ce95';
+const LIST_ID         = 99461;
 
-const BASE_URL = 'https://api.responder.co.il/main';
-const LIST_ID  = 99461; // שיחת ייעוץ
+let cachedToken = null;
+let tokenExpiry  = 0;
 
-function buildAuthHeader() {
-  const cKey    = process.env.RESPONDER_C_KEY;
-  const cSecret = process.env.RESPONDER_C_SECRET;
-  const uKey    = process.env.RESPONDER_U_KEY;
-  const uSecret = process.env.RESPONDER_U_SECRET;
+async function getToken() {
+  if (cachedToken && Date.now() / 1000 < tokenExpiry - 300) return cachedToken;
 
-  const nonce     = randomUUID().replace(/-/g, '');
-  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const res = await fetch(`${GRAPH_BASE}/oauth/token`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      client_id:     CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+      user_token:    USER_TOKEN,
+      grant_type:    'client_credentials',
+    }),
+  });
 
-  const cHash = createHash('md5').update(cSecret + nonce).digest('hex');
-  const uHash = createHash('md5').update(uSecret + nonce).digest('hex');
+  const data = await res.json();
+  if (!data.token) throw new Error('Responder auth failed: ' + JSON.stringify(data));
 
-  return [
-    `c_key=${encodeURIComponent(cKey)}`,
-    `c_secret=${encodeURIComponent(cHash)}`,
-    `u_key=${encodeURIComponent(uKey)}`,
-    `u_secret=${encodeURIComponent(uHash)}`,
-    `nonce=${encodeURIComponent(nonce)}`,
-    `timestamp=${encodeURIComponent(timestamp)}`,
-  ].join(',');
+  cachedToken  = data.token;
+  tokenExpiry  = data.expire;
+  return cachedToken;
 }
 
 async function syncToKesher({ name, phone, business }) {
@@ -31,17 +35,15 @@ async function syncToKesher({ name, phone, business }) {
 
   try {
     const [firstName, ...rest] = (name || '').trim().split(' ');
-    const lastName = rest.join(' ');
-
     const res = await fetch(webhookUrl, {
-      method: 'POST',
+      method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         first_name: firstName || '',
-        last_name:  lastName  || '',
-        phone:      phone     || '',
+        last_name:  rest.join(' ') || '',
+        phone:      phone    || '',
         source:     'שיחת פיצוח',
-        notes:      business  || '',
+        notes:      business || '',
       }),
     });
     console.log('KESHER sync:', res.status);
@@ -65,43 +67,41 @@ export default async function handler(req, res) {
     ? `${digits}@form.orkinde.co.il`
     : `lead${Date.now()}@form.orkinde.co.il`;
 
-  const subscriber = {
-    NAME:   `${firstName} ${lastName}`.trim(),
-    EMAIL:  email,
-    PHONE:  phone || '',
-  };
-
-  console.log('Adding subscriber to list', LIST_ID, '| email:', email, '| name:', subscriber.NAME);
+  console.log('Subscribing to list', LIST_ID, '| email:', email, '| name:', firstName, lastName);
 
   try {
-    const params = new URLSearchParams();
-    params.append('subscribers', JSON.stringify([subscriber]));
+    const token = await getToken();
+    console.log('Token acquired OK');
 
-    const response = await fetch(`${BASE_URL}/lists/${LIST_ID}/subscribers`, {
+    const response = await fetch(`${GRAPH_BASE}/subscribers`, {
       method:  'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization:  buildAuthHeader(),
+        'Authorization': `Bearer ${token}`,
+        'Content-Type':  'application/json',
       },
-      body: params.toString(),
+      body: JSON.stringify({
+        email,
+        list_ids:  [LIST_ID],
+        first:     firstName,
+        last:      lastName,
+        override:  true,
+        rejoin:    true,
+      }),
     });
 
-    const rawText = await response.text();
-    console.log('Responder HTTP:', response.status, '| body:', rawText);
-
-    let data = {};
-    try { data = JSON.parse(rawText); } catch { data = { raw: rawText }; }
+    const data = await response.json();
+    console.log('Responder V2 response:', JSON.stringify(data));
 
     if (!data?.status) {
-      console.error('Responder rejected subscriber. status:', response.status, 'data:', JSON.stringify(data));
+      console.error('Responder rejected subscriber:', JSON.stringify(data));
     }
 
-    await syncToKesher({ name: subscriber.NAME, phone: phone || '', business });
+    await syncToKesher({ name: `${firstName} ${lastName}`.trim(), phone: phone || '', business });
 
-    return res.status(200).json({ ok: true, responder: data, httpStatus: response.status });
+    return res.status(200).json({ ok: true, responder: data });
 
   } catch (err) {
-    console.error('Responder fetch error:', err.message);
+    console.error('Responder error:', err.message);
     return res.status(200).json({ ok: true, note: 'queued' });
   }
 }

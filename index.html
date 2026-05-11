@@ -38,7 +38,7 @@
       --border-hi:   rgba(122,156,191,0.28);
     }
 
-    html { direction: rtl; scroll-behavior: smooth; }
+    html { direction: rtl; scroll-behavior: smooth; overflow-x:hidden; }
 
     body {
       font-family: 'Open Sans', sans-serif;
@@ -49,13 +49,13 @@
 
     /* ══ SCROLL REVEAL ══ */
     .fu {
-      opacity: 0; filter: blur(5px); transform: translateY(24px);
-      transition: opacity .7s ease, filter .7s ease, transform .7s ease;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
     }
-    .fu.vis { opacity:1; filter:blur(0); transform:translateY(0); }
+    .fu.vis { opacity:1; transform:translateY(0); }
     .fu.d1 { transition-delay:.10s; }
-    .fu.d2 { transition-delay:.22s; }
-    .fu.d3 { transition-delay:.36s; }
+    .fu.d2 { transition-delay:.20s; }
+    .fu.d3 { transition-delay:.32s; }
 
     /* ══ KEYFRAMES ══ */
     /* PROOF GRID — סטטי */
@@ -82,16 +82,20 @@
     }
 
     @keyframes btn-glow {
-      0%,100% { box-shadow: 0 6px 36px rgba(240,242,245,.14); }
-      50%      { box-shadow: 0 8px 52px rgba(143,184,216,.32); }
+      0%,100% { filter: drop-shadow(0 4px 18px rgba(240,242,245,.14)); }
+      50%      { filter: drop-shadow(0 6px 28px rgba(143,184,216,.30)); }
     }
     @keyframes dot-pulse {
       0%,100% { opacity:.5; } 50% { opacity:1; }
     }
 
     /* ══ BG BLOBS ══ */
-    .bg-deco { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
-    .bg-blob { position:absolute; border-radius:50%; filter:blur(140px); opacity:.12; }
+    .bg-deco { position:fixed; inset:0; pointer-events:none; z-index:0;
+      background:
+        radial-gradient(ellipse 900px 900px at 110% -10%, rgba(22,37,71,.85) 0%, transparent 68%),
+        radial-gradient(ellipse 700px 700px at -14% 108%, rgba(10,24,40,.7) 0%, transparent 68%);
+    }
+    .bg-blob { display:none; }
 
     /* ══ LAYOUT ══ */
     .wrap {
@@ -135,7 +139,7 @@
     .em-gold  { font-weight:700; color:var(--gold); }
 
     /* ══ SECTION BASE ══ */
-    .sec { padding: 96px 0; position: relative; z-index:1; }
+    .sec { padding: 96px 0; position: relative; z-index:1; overflow:hidden; }
     .sec-glow {
       position:absolute; pointer-events:none; z-index:0;
       width:500px; height:500px; border-radius:50%;
@@ -220,10 +224,13 @@
 
     /* HERO IMAGE */
     .hero-img-col { display:flex; align-items:flex-start; }
+    .hero-img-wrap { overflow:hidden; width:100%; max-width:500px; }
+    .hero-img-col picture { display:block; width:100%; }
     .hero-img-col img {
-      width:100%; max-width:500px; display:block;
-      -webkit-mask-image:linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,.55) 72%, transparent 96%);
-      mask-image:linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,.55) 72%, transparent 96%);
+      width:100%; height:auto; display:block;
+      /* desktop: fade top (white bg above head) + bottom */
+      -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 5%, black 84%, transparent 100%);
+      mask-image:linear-gradient(to bottom, transparent 0%, black 5%, black 84%, transparent 100%);
     }
 
     /* ══════════════════════════════
@@ -288,14 +295,15 @@
       box-shadow:0 24px 64px rgba(9,15,28,.70), 0 0 0 6px rgba(143,184,216,.07);
       overflow:hidden; position:relative;
     }
+    .about-frame-card picture { display:block; }
     .about-frame-card img {
-      width:100%; display:block;
+      width:100%; height:auto; display:block;
     }
 
     /* ══════════════════════════════
        SECTION 4 — PROOF
     ══════════════════════════════ */
-    .proof-sec { padding:96px 0; position:relative; z-index:1; }
+    .proof-sec { padding:96px 0; position:relative; z-index:1; overflow:hidden; }
 
     .proof-headline {
       font-size:clamp(1.8rem, 4vw, 2.9rem);
@@ -370,7 +378,7 @@
     ══════════════════════════════ */
     .form-sec {
       background:linear-gradient(160deg, var(--bg) 0%, #0c1c33 50%, #111f3a 100%);
-      padding:110px 0; position:relative; z-index:1;
+      padding:110px 0; position:relative; z-index:1; overflow:hidden;
     }
     .form-sec::before {
       content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
@@ -448,44 +456,60 @@
 
     /* ══ MOBILE ══ */
     @media (max-width:920px) {
+      /* layout */
       .hero-inner {
-        grid-template-columns:1fr; padding:50px 24px 0;
+        grid-template-columns:1fr; padding:50px 20px 0;
         gap:0; text-align:center;
       }
       .hero-img-col { justify-content:center; order:-1; }
-      .hero-img-col img { max-width:260px; }
+      .hero-img-wrap { max-width:280px; }
       .hero-text-col { padding-top:24px; padding-bottom:64px; }
       .hero-sub { margin:0 auto 44px; }
       .sec-h2 { margin-left:auto; margin-right:auto; }
+
+      /* hero image: single radial gradient — works on all iOS Safari versions */
+      .hero-img-col img {
+        -webkit-mask-image: radial-gradient(ellipse 86% 90% at 50% 44%, black 50%, rgba(0,0,0,.25) 72%, transparent 86%);
+        mask-image:         radial-gradient(ellipse 86% 90% at 50% 44%, black 50%, rgba(0,0,0,.25) 72%, transparent 86%);
+      }
+
+      /* performance: position:fixed bg causes GPU repaint on every scroll frame */
+      .bg-deco { position:absolute; }
+
+      /* performance: filter: drop-shadow breaks GPU compositing → jank */
+      .cta-btn  { animation:none; }
+      .submit-btn { animation:none; }
     }
 
     @media (max-width:700px) {
       .wrap { padding:0 20px; }
-      .about-split { grid-template-columns:1fr; gap:24px; text-align:center; }
-      .about-frame-card { max-width:260px; margin:0 auto; }
+
+      /* about: flex column + align-self:center is reliable on all iOS versions */
+      .about-split {
+        display:flex; flex-direction:column;
+        align-items:stretch; gap:24px; text-align:center;
+      }
+      .about-frame-card { align-self:center; width:260px; min-height:10px; }
+
       .fit-cols { grid-template-columns:1fr; gap:40px; }
       .call-card { padding:36px 22px; }
       .form-card { padding:36px 20px; }
-      .sec { padding:70px 0; }
+      .sec  { padding:70px 0; }
       .proof-sec { padding:70px 0; }
       .cta-btn { padding:18px 32px; font-size:1rem; width:100%; text-align:center; display:block; }
-      .p-card, .p-ring { width:180px; height:375px; }
-      p, .tried-intro, .tried-list li, .tried-end { font-size:1.05rem; }
+      p, .tried-intro, .tried-end { font-size:1.05rem; }
     }
 
     @media (max-width:400px) {
       .hero-h1 { font-size:1.9rem; }
+      .hero-img-wrap { max-width:240px; }
     }
 
   </style>
 </head>
 <body>
 
-<div class="bg-deco">
-  <div class="bg-blob" style="width:800px;height:800px;background:#162547;top:-12%;right:-18%;"></div>
-  <div class="bg-blob" style="width:600px;height:600px;background:#0a1828;bottom:5%;left:-14%;"></div>
-  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 8%,transparent 92%,var(--bg) 100%);pointer-events:none;"></div>
-</div>
+<div class="bg-deco"></div>
 
 <!-- ════════════════════════════════
      HERO
@@ -516,10 +540,12 @@
     </div>
 
     <div class="hero-img-col fu d2">
-      <picture>
-        <source srcset="assets/photos/1.webp" type="image/webp">
-        <img src="assets/photos/1.png" alt="אור קינדה" width="800" height="1000" fetchpriority="high" decoding="sync">
-      </picture>
+      <div class="hero-img-wrap">
+        <picture>
+          <source srcset="assets/photos/1.webp" type="image/webp">
+          <img src="assets/photos/1.png" alt="אור קינדה" width="1080" height="1350" fetchpriority="high" decoding="sync">
+        </picture>
+      </div>
     </div>
 
   </div>
@@ -567,8 +593,6 @@
       </div>
 
       <p class="tried-end fu">עדיין, בסוף החודש נשארת באותו מצב.</p>
-
-      <p style="font-size:1.14rem;color:var(--text-dim);line-height:1.85;max-width:700px;margin:36px auto 0;text-align:center;">כדי להפוך את האבחון הזה לתוצאות בשטח, אני מזמינה אותך לשיחת אסטרטגיה וייעוץ ממוקדת (60 דקות) ללא עלות. בשיחה ננתח יחד את המחסום האישי שלך ונבין איך לייצר שיווק שעובד עבורך.</p>
     </div>
   </div>
 </section>
@@ -603,7 +627,33 @@
 </section>
 
 <!-- ════════════════════════════════
-     SECTION 4 — PROOF
+     SECTION 4 — ABOUT
+════════════════════════════════ -->
+<section class="sec">
+  <div class="sec-glow" style="background:radial-gradient(circle,rgba(143,184,216,.07) 0%,transparent 70%);"></div>
+  <div class="wrap">
+    <div class="about-split fu">
+      <div class="about-frame-card">
+        <picture>
+          <source srcset="assets/photos/about.webp" type="image/webp">
+          <img src="assets/photos/דף נחיתה מי אני.png" alt="אור קינדה" width="1080" height="1350" loading="lazy" decoding="async">
+        </picture>
+      </div>
+      <div>
+        <h2 class="sec-h2" style="margin-bottom:24px;">
+          ולמקרה שאנחנו לא מכירות<br>נעים מאוד. אני אור קינדה.
+        </h2>
+        <p>בשנתיים האחרונות ליוויתי מגוון בעלות עסקים וראיתי את זה קורה שוב ושוב: נשים מוכשרות בטירוף שסוגרות את העסק רק כי אף אחד לא לימד אותן <span class="em-line">איך לגרום למומחיות שלהן להכניס כסף</span>.</p>
+        <p>ראיתי את הפער בין עסק שמושך לקוחות לעסק שרודף אחריהם.</p>
+        <p>זה לא קשור לכמות הפוסטים, לאיכות הצילום או לכמות העוקבים שלך. <strong>זה קשור למסרים השיווקיים ובאסטרטגיה שעוטפת את הכל.</strong></p>
+        <p>אני יודעת שזה נשמע כמו סלוגן שהרבה יועצים זורקים. אבל זה בדיוק מה שעשיתי מאחורי הקלעים ללקוחות שלי.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════
+     SECTION 5 — PROOF
 ════════════════════════════════ -->
 <section class="proof-sec">
 
@@ -626,40 +676,14 @@
   <!-- 5 תמונות המלצות — גדולות -->
   <div class="proof-marquee-wrap fu" style="margin-top:56px;">
     <div class="proof-marquee-inner">
-      <div class="proof-snap-img"><img src="assets/social-proof/1.png" alt="" loading="lazy"></div>
-      <div class="proof-snap-img"><img src="assets/social-proof/2.png" alt="" loading="lazy"></div>
-      <div class="proof-snap-img"><img src="assets/social-proof/3.png" alt="" loading="lazy"></div>
-      <div class="proof-snap-img"><img src="assets/social-proof/4.png" alt="" loading="lazy"></div>
-      <div class="proof-snap-img"><img src="assets/social-proof/5.png" alt="" loading="lazy"></div>
+      <div class="proof-snap-img"><picture><source srcset="assets/social-proof/1.webp" type="image/webp"><img src="assets/social-proof/1.png" alt="" loading="lazy" decoding="async"></picture></div>
+      <div class="proof-snap-img"><picture><source srcset="assets/social-proof/2.webp" type="image/webp"><img src="assets/social-proof/2.png" alt="" loading="lazy" decoding="async"></picture></div>
+      <div class="proof-snap-img"><picture><source srcset="assets/social-proof/3.webp" type="image/webp"><img src="assets/social-proof/3.png" alt="" loading="lazy" decoding="async"></picture></div>
+      <div class="proof-snap-img"><picture><source srcset="assets/social-proof/4.webp" type="image/webp"><img src="assets/social-proof/4.png" alt="" loading="lazy" decoding="async"></picture></div>
+      <div class="proof-snap-img"><picture><source srcset="assets/social-proof/5.webp" type="image/webp"><img src="assets/social-proof/5.png" alt="" loading="lazy" decoding="async"></picture></div>
     </div>
   </div>
 
-</section>
-
-<!-- ════════════════════════════════
-     SECTION 5 — ABOUT
-════════════════════════════════ -->
-<section class="sec">
-  <div class="sec-glow" style="background:radial-gradient(circle,rgba(143,184,216,.07) 0%,transparent 70%);"></div>
-  <div class="wrap">
-    <div class="about-split fu">
-      <div class="about-frame-card">
-        <picture>
-          <source srcset="assets/photos/about.webp" type="image/webp">
-          <img src="assets/photos/תמונות דף נחיתה (4).png" alt="אור קינדה" width="1080" height="1350" loading="lazy" decoding="async">
-        </picture>
-      </div>
-      <div>
-        <h2 class="sec-h2" style="margin-bottom:24px;">
-          ולמקרה שאנחנו לא מכירות<br>נעים מאוד. אני אור קינדה.
-        </h2>
-        <p>בשנתיים האחרונות ליוויתי מגוון בעלות עסקים וראיתי את זה קורה שוב ושוב: נשים מוכשרות בטירוף שסוגרות את העסק רק כי אף אחד לא לימד אותן <span class="em-line">איך לגרום למומחיות שלהן להכניס כסף</span>.</p>
-        <p>ראיתי את הפער בין עסק שמושך לקוחות לעסק שרודף אחריהם.</p>
-        <p>זה לא קשור לכמות הפוסטים, לאיכות הצילום או לכמות העוקבים שלך. <strong>זה קשור למסרים השיווקיים ובאסטרטגיה שעוטפת את הכל.</strong></p>
-        <p>אני יודעת שזה נשמע כמו סלוגן שהרבה יועצים זורקים. אבל זה בדיוק מה שעשיתי מאחורי הקלעים ללקוחות שלי.</p>
-      </div>
-    </div>
-  </div>
 </section>
 
 <!-- ════════════════════════════════
@@ -671,7 +695,7 @@
     <p class="fu" style="text-align:center; margin:0 auto 48px; max-width:600px;">וכדי שזה יקרה אני לא מקבלת כל אחת</p>
     <div class="fit-cols">
       <div class="fit-block fu">
-        <h3>זה מתאים אם את</h3>
+        <h3>זה מתאים לך אם</h3>
         <ul class="fit-list">
           <li class="fit-row"><span class="fit-icon yes">✓</span><span class="fit-text">יש לך עסק פעיל ולקוחות מרוצים.</span></li>
           <li class="fit-row"><span class="fit-icon yes">✓</span><span class="fit-text">נמאס לך שהפניות לא עקביות.</span></li>
@@ -679,7 +703,7 @@
         </ul>
       </div>
       <div class="fit-block fu d1">
-        <h3>זה לא מתאים אם את</h3>
+        <h3>זה לא מתאים לך אם</h3>
         <ul class="fit-list">
           <li class="fit-row"><span class="fit-icon no">✕</span><span class="fit-text">אין לך לקוחות בכלל (עדיין).</span></li>
           <li class="fit-row"><span class="fit-icon no">✕</span><span class="fit-text">את מחפשת "קוסמת" שתעשה את העבודה במקומך.</span></li>
@@ -696,29 +720,36 @@
   <div class="wrap">
 
     <blockquote class="closing-quote fu">
-      אי אפשר להמשיך באותו מסלול ולצפות לתוצאה שונה.<br>
-      בואי נבין מה באמת עוצר אותך.
+      את לא יכולה להמשיך באותו מסלול ולצפות לתוצאה שונה<br>
+      בואי נבין מה עוצר אותך
     </blockquote>
 
     <div class="form-card fu">
       <div id="form-inner">
         <h2>שלחי לי את הפרטים</h2>
         <p class="form-sub">אחזור אלייך תוך 24 שעות.</p>
-        <form id="consult-form" onsubmit="handleSubmit(event)" novalidate>
+        <form id="consult-form"
+              action="https://form2.ravpage.co.il/21f8478536390ce2d07ff010b691ec356A01B2E2"
+              method="POST"
+              target="rm-frame"
+              onsubmit="handleSubmit(event)"
+              novalidate>
           <div class="form-group">
             <label for="f-name">שם מלא</label>
-            <input type="text" id="f-name" name="name" required placeholder="השם שלך">
+            <input type="text" id="f-name" name="FullName" required placeholder="השם שלך">
           </div>
           <div class="form-group">
             <label for="f-phone">טלפון</label>
-            <input type="tel" id="f-phone" name="phone" required placeholder="05X-XXXXXXX">
+            <input type="tel" id="f-phone" name="Phone" required placeholder="05X-XXXXXXX">
           </div>
           <div class="form-group">
             <label for="f-biz">תחום עיסוק</label>
             <input type="text" id="f-biz" name="business" required placeholder="לדוגמה: ספרות, אימון אישי, יעוץ...">
           </div>
+          <input type="hidden" id="f-email" name="Email" value="">
           <button type="submit" class="submit-btn" id="submit-btn">שלחי לי את הפרטים ואחזור אלייך</button>
         </form>
+        <iframe name="rm-frame" style="display:none;width:0;height:0;border:0" aria-hidden="true" title=""></iframe>
         <p class="form-note">אני מקבלת עד 5 שיחות כאלו בחודש בלבד.</p>
       </div>
       <div class="success-msg" id="success-msg">
@@ -749,31 +780,30 @@
   }, { threshold: 0.06 });
   document.querySelectorAll('.fu').forEach(el => io.observe(el));
 
-  /* form submit */
-  async function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit(e) {
+    const name  = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const biz   = document.getElementById('f-biz').value.trim();
+
+    if (!name || !phone || !biz) {
+      e.preventDefault();
+      return;
+    }
+
+    const digits = phone.replace(/\D/g, '');
+    document.getElementById('f-email').value =
+      digits ? `${digits}@form.orkinde.co.il` : `lead${Date.now()}@form.orkinde.co.il`;
+
     const btn = document.getElementById('submit-btn');
     btn.disabled = true; btn.textContent = 'שולחת...';
 
-    const name    = document.getElementById('f-name').value.trim();
-    const phone   = document.getElementById('f-phone').value.trim();
-    const biz     = document.getElementById('f-biz').value.trim();
-    const digits  = phone.replace(/\D/g, '');
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, business: biz }),
+    }).catch(() => {});
 
-    try {
-      await fetch('/api/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name, phone, business: biz,
-          /* synthetic email so Rav-Messer accepts the record */
-          email: digits ? `${digits}@form.orkinde.co.il` : `lead${Date.now()}@form.orkinde.co.il`,
-          source: 'שיחת פיצוח'
-        })
-      });
-    } catch(_) {}
-
-    showSuccess();
+    setTimeout(showSuccess, 150);
   }
 
   function showSuccess() {
