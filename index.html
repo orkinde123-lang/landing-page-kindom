@@ -242,9 +242,12 @@
     /* ══════════════════════════════
        SECTION 2 — PROBLEM
     ══════════════════════════════ */
+    .mob-br { display:none; }
+    @media (max-width:700px) { .mob-br { display:inline; } }
+
     .tried-intro {
-      font-size:1.14rem; color:var(--text-dim);
-      line-height:1.85; margin-bottom:36px;
+      font-size:clamp(1.35rem, 2.6vw, 1.75rem); font-weight:700; color:var(--text);
+      line-height:1.75; margin-bottom:36px;
       text-align:center; max-width:700px; margin-left:auto; margin-right:auto;
     }
     .pain-cards {
@@ -564,8 +567,8 @@
   <div class="sec-glow"></div>
   <div class="wrap">
     <h2 class="sec-h2 fu" style="text-align:center; margin-left:auto; margin-right:auto;">
-      לדעת שיש לך בעיה שיווקית זה החלק הקל<br>
-      להבין מה לעשות עם זה מחר בבוקר? זה כבר סיפור אחר.
+      לדעת שיש לך בעיה שיווקית<br class="mob-br">זה החלק הקל<br>
+      להבין מה לעשות עם זה מחר בבוקר?<br>זה כבר סיפור אחר.
     </h2>
     <div class="fu d1">
       <p class="tried-intro">יכול להיות שכבר ניסית הכל:</p>
