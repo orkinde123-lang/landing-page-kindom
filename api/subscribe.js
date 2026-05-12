@@ -3,6 +3,7 @@ const CLIENT_ID       = '143';
 const CLIENT_SECRET   = '4oehPjI7ZJhOg6K9bP4zam0XTec147EfS9DSW2S0';
 const USER_TOKEN      = 'a208b32e03c8e0a756cfbab7b4dc84c549628ab3fd0f9c4d98c60e7976a9ce95';
 const LIST_ID         = 99461;
+const KESHER_WEBHOOK  = 'https://hook.eu1.make.com/yrr795v8alsu2mlm77lra1atlrqnsqn5';
 
 let cachedToken = null;
 let tokenExpiry  = 0;
@@ -30,7 +31,7 @@ async function getToken() {
 }
 
 async function syncToKesher({ name, phone, business }) {
-  const webhookUrl = process.env.KESHER_WEBHOOK_URL;
+  const webhookUrl = KESHER_WEBHOOK;
   if (!webhookUrl) return;
 
   try {
