@@ -468,6 +468,31 @@
     .success-msg { display:none; text-align:center; padding:44px 20px; }
     .success-icon { font-size:3rem; margin-bottom:18px; }
 
+    /* ══ PROOF ARROWS ══ */
+    .proof-arrows {
+      display:flex; justify-content:center; gap:16px;
+      margin-top:24px; padding:0 36px;
+    }
+    .proof-arrow {
+      width:50px; height:50px; border-radius:50%;
+      background:rgba(143,184,216,.08);
+      border:1px solid rgba(143,184,216,.22);
+      color:var(--accent); cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:background .18s, border-color .18s, transform .18s;
+      flex-shrink:0;
+    }
+    .proof-arrow:hover {
+      background:rgba(143,184,216,.16);
+      border-color:rgba(143,184,216,.40);
+      transform:scale(1.07);
+    }
+    .proof-arrow svg {
+      width:20px; height:20px;
+      stroke:currentColor; fill:none; stroke-width:2;
+      stroke-linecap:round; stroke-linejoin:round;
+    }
+
     /* ══ FOOTER ══ */
     footer {
       padding:32px 20px; text-align:center;
@@ -489,10 +514,16 @@
       .hero-sub { margin:0 auto 44px; }
       .sec-h2 { margin-left:auto; margin-right:auto; }
 
-      /* hero image: single radial gradient — works on all iOS Safari versions */
+      /* hero image: fade bottom elegantly + trim sides */
       .hero-img-col img {
-        -webkit-mask-image: radial-gradient(ellipse 86% 90% at 50% 44%, black 50%, rgba(0,0,0,.25) 72%, transparent 86%);
-        mask-image:         radial-gradient(ellipse 86% 90% at 50% 44%, black 50%, rgba(0,0,0,.25) 72%, transparent 86%);
+        -webkit-mask-image:
+          linear-gradient(to bottom, black 0%, black 66%, transparent 100%),
+          linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+        -webkit-mask-composite: source-in;
+        mask-image:
+          linear-gradient(to bottom, black 0%, black 66%, transparent 100%),
+          linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+        mask-composite: intersect;
       }
 
       /* performance: position:fixed bg causes GPU repaint on every scroll frame */
@@ -695,7 +726,7 @@
   </div>
 
   <!-- 5 תמונות המלצות — גדולות -->
-  <div class="proof-marquee-wrap fu" style="margin-top:56px;">
+  <div class="proof-marquee-wrap fu" id="proof-scroll" style="margin-top:56px;">
     <div class="proof-marquee-inner">
       <div class="proof-snap-img"><img src="assets/social-proof/1.png" alt="" loading="lazy" decoding="async"></div>
       <div class="proof-snap-img"><img src="assets/social-proof/2.png" alt="" loading="lazy" decoding="async"></div>
@@ -703,6 +734,14 @@
       <div class="proof-snap-img"><img src="assets/social-proof/4.png" alt="" loading="lazy" decoding="async"></div>
       <div class="proof-snap-img"><img src="assets/social-proof/5.png" alt="" loading="lazy" decoding="async"></div>
     </div>
+  </div>
+  <div class="proof-arrows fu">
+    <button class="proof-arrow" id="proof-prev" aria-label="הקודם">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="proof-arrow" id="proof-next" aria-label="הבא">
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
   </div>
 
 </section>
@@ -793,6 +832,19 @@
 </footer>
 
 <script>
+  /* video first frame */
+  const vid = document.querySelector('.local-video');
+  if (vid) vid.addEventListener('loadedmetadata', () => { vid.currentTime = 0.001; });
+
+  /* proof arrows */
+  const proofScroll = document.getElementById('proof-scroll');
+  document.getElementById('proof-prev')?.addEventListener('click', () => {
+    proofScroll.scrollBy({ left: -360, behavior: 'smooth' });
+  });
+  document.getElementById('proof-next')?.addEventListener('click', () => {
+    proofScroll.scrollBy({ left: 360, behavior: 'smooth' });
+  });
+
   /* scroll reveal */
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
